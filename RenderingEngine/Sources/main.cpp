@@ -19,11 +19,14 @@
 #include "Cube.h"
 #include "Plane.h"
 
+#include "Defs.h"
+
 #include <iostream>
 
 int main()
 {
 	WindowManager windowManager(1024, 712);
+	EngineManager::Instance().InitializeEngine();
 	
 	Shader standardShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\VertexShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\FragmentShader.fs");
 	Shader textureShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\TextureShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\TextureShader.fs");
@@ -72,13 +75,19 @@ int main()
 	mesh2.AddTexture(texture1);
 	mesh2.AddTexture(texture2);
 
-	Cube cube(textureShader);
-	cube.AddTexture(containerTexture);
-	cube.SetSpecularMap(containerSpecularMap);
+	Cube cube(colorShader);
+	cube.SetObjectColor(glm::vec3(1.0, 0.51, 0.3));
+
+	Cube cube2(colorShader);
+	cube2.AddTexture(containerTexture);
+	cube2.SetSpecularMap(containerSpecularMap);
+
+	Cube cube3(colorShader);
+
 	//cube.AddTexture(texture2);
 	//cube.SetObjectColor(glm::vec3(1.0f, 0.5f, 0.31f));
-	Material cubeMaterial(glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 1.0f, 1.0f));
-	cube.SetMaterial(cubeMaterial);
+	Material cubeMaterial(glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.1f, 0.1f, 0.1f));
+	cube3.SetMaterial(cubeMaterial);
 
 	Cube lightMesh(colorShader);
 	lightMesh.SetObjectColor(glm::vec3(1.0, 1.0, 1.0));
@@ -123,7 +132,16 @@ int main()
 			//cubes[i].Draw();
 		}*/
 		cube.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube.Draw();
+		cube.Draw(LightingModel::COLOR_ONLY);
+
+		cube2.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube2.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
+		cube2.Draw(LightingModel::PHONG_TEXTURE);
+
+		cube3.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube3.Translate(glm::vec3(-2.0f, 0.0f, -2.0f));
+		cube3.Draw(LightingModel::PHONG_COLOR);
+
 		plane.Translate(glm::vec3(0.0, -0.5, 0.0));
 		plane.Rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 		plane.Scale(glm::vec3(15.0, 15.0, 0.0));

@@ -34,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="Sources\Camera.h" />
     <ClInclude Include="Sources\Cube.h" />
+    <ClInclude Include="Sources\Defs.h" />
     <ClInclude Include="Sources\EngineManager.h" />
     <ClInclude Include="Sources\Light.h" />
     <ClInclude Include="Sources\Material.h" />
@@ -44,14 +45,18 @@
     <ClInclude Include="Sources\WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sources\ColorShader.fs" />
-    <None Include="Sources\ColorShader.vs" />
-    <None Include="Sources\FragmentShader.fs" />
-    <None Include="Sources\TextureNoLighting.fs" />
-    <None Include="Sources\TextureNoLighting.vs" />
-    <None Include="Sources\TextureShader.fs" />
-    <None Include="Sources\TextureShader.vs" />
-    <None Include="Sources\VertexShader.vs" />
+    <None Include="PhongLightingShader.fs" />
+    <None Include="PhongLightingShader.vs" />
+    <None Include="Shader.fs" />
+    <None Include="Shader.vs" />
+    <None Include="Sources\Shaders\ColorShader.fs" />
+    <None Include="Sources\Shaders\ColorShader.vs" />
+    <None Include="Sources\Shaders\FragmentShader.fs" />
+    <None Include="Sources\Shaders\TextureNoLighting.fs" />
+    <None Include="Sources\Shaders\TextureNoLighting.vs" />
+    <None Include="Sources\Shaders\TextureShader.fs" />
+    <None Include="Sources\Shaders\TextureShader.vs" />
+    <None Include="Sources\Shaders\VertexShader.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D90E3720-9627-45BD-92A1-31A8DA736843}</ProjectGuid>

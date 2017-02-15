@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Material.h"
+#include "Defs.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,6 +21,11 @@ public:
 	virtual void ConfigureMesh();
 	void ConfigureMeshIndices(); // a supprimer ?
 	virtual void Draw();
+	void Draw(LightingModel lightingModel);
+	void SetTexturesUniformValues();
+	void SetMvpUniformValue();
+	void SetPhongLightingUniformValues();
+	void SetColorUniformValues();
 	void DrawIndices(); // à supprimer ?
 
 	void AddTexture(Texture& texture);
@@ -53,4 +59,6 @@ protected:
 	Material _Material;
 	glm::vec3 _ObjectColor = glm::vec3(1.0f,1.0f,1.0f);
 	Shader _Shader;
+
+	LightingModel _LightingModel;
 };

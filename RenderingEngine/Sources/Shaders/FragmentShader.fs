@@ -17,7 +17,7 @@ struct Material {
     vec3 specular;
     float shininess;
 }; 
-  
+
 uniform Light light; 
 uniform Material material;
 uniform vec3 viewPos;

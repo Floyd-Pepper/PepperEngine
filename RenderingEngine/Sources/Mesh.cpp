@@ -165,6 +165,116 @@ void Mesh::Draw()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Mesh::Draw(LightingModel lightingModel)
+{
+	if (!_Textures.empty())
+	{
+		SetTexturesUniformValues();
+	}
+	switch (lightingModel)
+	{
+	case LightingModel::PHONG_COLOR:
+		_Shader = EngineManager::Instance().GetShaderByName("PhongColorShader");
+		_Shader.Use();
+		SetPhongLightingUniformValues();
+		break;
+	case LightingModel::PHONG_TEXTURE:
+		_Shader = EngineManager::Instance().GetShaderByName("PhongTextureShader");
+		_Shader.Use();
+		SetPhongLightingUniformValues();
+		break;
+	case LightingModel::DIFFUSE_ONLY:
+		break;
+	case LightingModel::COLOR_ONLY:
+		_Shader = EngineManager::Instance().GetShaderByName("ColorShader");
+		_Shader.Use();
+		SetColorUniformValues();
+		break;
+	}
+	SetMvpUniformValue();
+	//Drawing
+	glBindVertexArray(_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, _VerticesNumber);
+	glBindVertexArray(0);
+
+	// reinitialization of the transformation matrix
+	_Transformation = glm::mat4();
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Mesh::SetTexturesUniformValues()
+{
+	int i = 0;
+	for (const auto& texture : _Textures)
+	{
+		GLuint in = texture->GetTextureID();
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+		//std::string strName = "texture" + std::to_string(i);
+		//const GLchar* textureName = strName.c_str();
+		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "material.diffuse"), i);
+		i++;
+	}
+}
+
+void Mesh::SetMvpUniformValue()
+{
+	//transformations (MVP)
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 projection;
+	model = _Transformation;
+	// Camera / View transformation
+	Camera camera = EngineManager::Instance().GetCamera();
+	view = camera.GetViewMatrix();
+	// projection
+	projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+	// MVP matrix loc
+	GLint modelLoc = glGetUniformLocation(_Shader.GetProgram(), "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	GLint viewLoc = glGetUniformLocation(_Shader.GetProgram(), "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	GLint projectionLoc = glGetUniformLocation(_Shader.GetProgram(), "projection");
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+}
+
+void Mesh::SetPhongLightingUniformValues()
+{
+	Camera camera = EngineManager::Instance().GetCamera();
+	//color & lightning
+	GLint viewPosLoc = glGetUniformLocation(_Shader.GetProgram(), "viewPos");
+	glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
+	GLint lightPosLoc = glGetUniformLocation(_Shader.GetProgram(), "light.position");
+	GLint lightAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "light.ambient");
+	GLint lightDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "light.diffuse");
+	GLint lightSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "light.specular");
+	Light light = EngineManager::Instance().GetLight();
+	glm::vec3 lightPosition = light.GetPosition();
+	glUniform3f(lightPosLoc, lightPosition.x, lightPosition.y, lightPosition.z);
+	glm::vec3 lightAmbient = light.GetAmbient();
+	glUniform3f(lightAmbientLoc, lightAmbient.x, lightAmbient.y, lightAmbient.z);
+	glm::vec3 lightDiffuse = light.GetDiffuse();
+	glUniform3f(lightDiffuseLoc, lightDiffuse.x, lightDiffuse.y, lightDiffuse.z);
+	glm::vec3 lightSpecular = light.GetSpecular();
+	glUniform3f(lightSpecularLoc, lightSpecular.x, lightSpecular.y, lightSpecular.z);
+
+	// material
+	GLint matAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "material.ambient");
+	GLint matDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "material.diffuse");
+	GLint matSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "material.specular");
+	GLint matShineLoc = glGetUniformLocation(_Shader.GetProgram(), "material.shininess");
+	glUniform3f(matAmbientLoc, _Material.GetAmbient().x, _Material.GetAmbient().y, _Material.GetAmbient().z);
+	glUniform3f(matDiffuseLoc, _Material.GetDiffuse().x, _Material.GetDiffuse().y, _Material.GetDiffuse().z);
+	glUniform3f(matSpecularLoc, _Material.GetSpecular().x, _Material.GetSpecular().y, _Material.GetSpecular().z);
+	glUniform1f(matShineLoc, _Material.GetShininess());
+}
+
+void Mesh::SetColorUniformValues()
+{
+	GLint objectColorLoc = glGetUniformLocation(_Shader.GetProgram(), "objectColor");
+	glUniform3f(objectColorLoc, _ObjectColor.x, _ObjectColor.y, _ObjectColor.z);
+}
+
 void Mesh::DrawIndices()
 {
 	// textures

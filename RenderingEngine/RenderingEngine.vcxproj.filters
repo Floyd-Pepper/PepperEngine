@@ -83,30 +83,45 @@
     <ClInclude Include="Sources\WindowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sources\VertexShader.vs">
+    <None Include="Sources\Shaders\ColorShader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\ColorShader.fs">
+    <None Include="Sources\Shaders\ColorShader.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\ColorShader.vs">
+    <None Include="Sources\Shaders\FragmentShader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\FragmentShader.fs">
+    <None Include="Sources\Shaders\TextureNoLighting.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\TextureNoLighting.fs">
+    <None Include="Sources\Shaders\TextureNoLighting.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\TextureNoLighting.vs">
+    <None Include="Sources\Shaders\TextureShader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\TextureShader.fs">
+    <None Include="Sources\Shaders\TextureShader.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\TextureShader.vs">
+    <None Include="Sources\Shaders\VertexShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="PhongLightingShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="PhongLightingShader.fs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

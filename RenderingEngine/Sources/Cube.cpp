@@ -7,7 +7,7 @@
 	ConfigureMesh();
 }*/
 
-Cube::Cube(Shader & shader)
+Cube::Cube(Shader& shader)
 {
 	_Shader = shader;
 	_VerticesNumber = 36;
