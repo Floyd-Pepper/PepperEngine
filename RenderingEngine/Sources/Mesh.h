@@ -24,7 +24,8 @@ public:
 	void Draw(LightingModel lightingModel);
 	void SetTexturesUniformValues();
 	void SetMvpUniformValue();
-	void SetPhongLightingUniformValues();
+	void SetMaterialUniformValues();
+	//void SetPhongLightingUniformValues();
 	void SetColorUniformValues();
 	void DrawIndices(); // à supprimer ?
 

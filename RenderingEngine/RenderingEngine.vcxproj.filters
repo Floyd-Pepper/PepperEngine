@@ -51,6 +51,12 @@
     <ClCompile Include="Sources\WindowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Camera.h">
@@ -86,17 +92,14 @@
     <ClInclude Include="Sources\Defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sources\Shaders\ColorShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\ColorShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\FragmentShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Sources\Shaders\TextureNoLighting.fs">
       <Filter>Shaders</Filter>
     </None>
@@ -109,19 +112,28 @@
     <None Include="Sources\Shaders\TextureShader.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\Shaders\VertexShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Shader.vs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="PhongLightingShader.vs">
+    <None Include="Sources\Shaders\PhongTextureShader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="PhongLightingShader.fs">
+    <None Include="Sources\Shaders\PhongTextureShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongColorShader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongColorShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\ColorOnlyShader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\ColorOnlyShader.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -135,14 +135,14 @@ void Mesh::Draw()
 	GLint lightAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "light.ambient");
 	GLint lightDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "light.diffuse");
 	GLint lightSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "light.specular");
-	Light light = EngineManager::Instance().GetLight();
-	glm::vec3 lightPosition = light.GetPosition();
+	PointLight* light = EngineManager::Instance().GetPointLight();
+	glm::vec3 lightPosition = light->GetPosition();
 	glUniform3f(lightPosLoc, lightPosition.x, lightPosition.y, lightPosition.z);
-	glm::vec3 lightAmbient = light.GetAmbient();
+	glm::vec3 lightAmbient = light->GetAmbient();
 	glUniform3f(lightAmbientLoc, lightAmbient.x, lightAmbient.y, lightAmbient.z);
-	glm::vec3 lightDiffuse = light.GetDiffuse();
+	glm::vec3 lightDiffuse = light->GetDiffuse();
 	glUniform3f(lightDiffuseLoc, lightDiffuse.x, lightDiffuse.y, lightDiffuse.z);
-	glm::vec3 lightSpecular = light.GetSpecular();
+	glm::vec3 lightSpecular = light->GetSpecular();
 	glUniform3f(lightSpecularLoc, lightSpecular.x, lightSpecular.y, lightSpecular.z);
 
 	// material
@@ -173,23 +173,39 @@ void Mesh::Draw(LightingModel lightingModel)
 	}
 	switch (lightingModel)
 	{
-	case LightingModel::PHONG_COLOR:
-		_Shader = EngineManager::Instance().GetShaderByName("PhongColorShader");
-		_Shader.Use();
-		SetPhongLightingUniformValues();
-		break;
-	case LightingModel::PHONG_TEXTURE:
-		_Shader = EngineManager::Instance().GetShaderByName("PhongTextureShader");
-		_Shader.Use();
-		SetPhongLightingUniformValues();
-		break;
-	case LightingModel::DIFFUSE_ONLY:
-		break;
-	case LightingModel::COLOR_ONLY:
-		_Shader = EngineManager::Instance().GetShaderByName("ColorShader");
-		_Shader.Use();
-		SetColorUniformValues();
-		break;
+		case LightingModel::PHONG_COLOR:
+		{
+			_Shader = EngineManager::Instance().GetShaderByName("PhongColorShader");
+			_Shader.Use();
+			if (EngineManager::Instance().GetPointLight())
+				EngineManager::Instance().GetPointLight()->SetUniformValues(_Shader.GetProgram(), 0);
+			if (EngineManager::Instance().GetDirectionalLight())
+				EngineManager::Instance().GetDirectionalLight()->SetUniformValues(_Shader.GetProgram());
+			SetMaterialUniformValues();
+			break;
+		}		
+		case LightingModel::PHONG_TEXTURE:
+		{
+			_Shader = EngineManager::Instance().GetShaderByName("PhongTextureShader");
+			_Shader.Use();
+			if(EngineManager::Instance().GetPointLight())
+				EngineManager::Instance().GetPointLight()->SetUniformValues(_Shader.GetProgram(), 0);
+			if(EngineManager::Instance().GetDirectionalLight())
+				EngineManager::Instance().GetDirectionalLight()->SetUniformValues(_Shader.GetProgram());
+			SetMaterialUniformValues();
+			break;
+		}	
+		case LightingModel::DIFFUSE_ONLY:
+		{
+			break;
+		}
+		case LightingModel::COLOR_ONLY:
+		{
+			_Shader = EngineManager::Instance().GetShaderByName("ColorShader");
+			_Shader.Use();
+			SetColorUniformValues();
+			break;
+		}	
 	}
 	SetMvpUniformValue();
 	//Drawing
@@ -238,9 +254,9 @@ void Mesh::SetMvpUniformValue()
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
-void Mesh::SetPhongLightingUniformValues()
+void Mesh::SetMaterialUniformValues()
 {
-	Camera camera = EngineManager::Instance().GetCamera();
+	/*Camera camera = EngineManager::Instance().GetCamera();
 	//color & lightning
 	GLint viewPosLoc = glGetUniformLocation(_Shader.GetProgram(), "viewPos");
 	glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -248,7 +264,7 @@ void Mesh::SetPhongLightingUniformValues()
 	GLint lightAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "light.ambient");
 	GLint lightDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "light.diffuse");
 	GLint lightSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "light.specular");
-	Light light = EngineManager::Instance().GetLight();
+	PointLight light = EngineManager::Instance().GetPointLight();
 	glm::vec3 lightPosition = light.GetPosition();
 	glUniform3f(lightPosLoc, lightPosition.x, lightPosition.y, lightPosition.z);
 	glm::vec3 lightAmbient = light.GetAmbient();
@@ -256,7 +272,7 @@ void Mesh::SetPhongLightingUniformValues()
 	glm::vec3 lightDiffuse = light.GetDiffuse();
 	glUniform3f(lightDiffuseLoc, lightDiffuse.x, lightDiffuse.y, lightDiffuse.z);
 	glm::vec3 lightSpecular = light.GetSpecular();
-	glUniform3f(lightSpecularLoc, lightSpecular.x, lightSpecular.y, lightSpecular.z);
+	glUniform3f(lightSpecularLoc, lightSpecular.x, lightSpecular.y, lightSpecular.z);*/
 
 	// material
 	GLint matAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "material.ambient");

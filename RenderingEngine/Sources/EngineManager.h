@@ -1,6 +1,8 @@
 #pragma once
 #include "Camera.h"
 #include "Light.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "Shader.h"
 
 #include <map>
@@ -15,8 +17,11 @@ public:
 	Camera& GetCamera() { return _Camera; }
 	void SetCamera(const Camera& camera) { _Camera = camera; }
 
-	const Light& GetLight() { return _Light; }
-	void SetLight(const Light& light) { _Light = light; }
+	DirectionalLight* GetDirectionalLight() { return _DirectionalLight; }
+	void SetDirectionalLight(DirectionalLight* light) { _DirectionalLight = light; }
+
+	PointLight* GetPointLight() { return _PointLight; }
+	void SetPointLight(PointLight* light) { _PointLight = light; }
 
 	const Shader& GetShaderByName(const std::string shaderName)
 	{
@@ -26,7 +31,9 @@ public:
 private:
 	static EngineManager _Instance;
 	Camera _Camera;
-	Light _Light;
+
+	DirectionalLight* _DirectionalLight;
+	PointLight* _PointLight;
 	std::map<std::string, Shader> _Shaders;
 
 	EngineManager();

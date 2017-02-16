@@ -13,7 +13,8 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Material.h"
-#include "Light.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "Texture.h"
 #include "Mesh.h"
 #include "Cube.h"
@@ -58,8 +59,10 @@ int main()
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	Light light1(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	EngineManager::Instance().SetLight(light1);
+ 	DirectionalLight dirLight(glm::vec3(1.0f, 1.0f, 1.0f));
+	//EngineManager::Instance().SetDirectionalLight(&dirLight);
+	PointLight pointLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	EngineManager::Instance().SetPointLight(&pointLight);
 
 	Texture texture1("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container.jpg", Texture::MirroredRepeat, Texture::Nearest);
 	Texture texture2("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\awesomeface.png", Texture::MirroredRepeat, Texture::Nearest);
@@ -75,19 +78,29 @@ int main()
 	mesh2.AddTexture(texture1);
 	mesh2.AddTexture(texture2);
 
+	//cube centrale (couleur)
 	Cube cube(colorShader);
 	cube.SetObjectColor(glm::vec3(1.0, 0.51, 0.3));
 
+	// 
 	Cube cube2(colorShader);
 	cube2.AddTexture(containerTexture);
-	cube2.SetSpecularMap(containerSpecularMap);
+	//cube2.SetSpecularMap(containerSpecularMap);
 
 	Cube cube3(colorShader);
+	Cube cube4(colorShader);
+	Cube cube5(colorShader);
+	Cube cube6(colorShader);
+	Cube cube7(colorShader);
 
 	//cube.AddTexture(texture2);
 	//cube.SetObjectColor(glm::vec3(1.0f, 0.5f, 0.31f));
 	Material cubeMaterial(glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.1f, 0.1f, 0.1f));
 	cube3.SetMaterial(cubeMaterial);
+	cube4.SetMaterial(cubeMaterial);
+	cube5.SetMaterial(cubeMaterial);
+	cube6.SetMaterial(cubeMaterial);
+	cube7.SetMaterial(cubeMaterial);
 
 	Cube lightMesh(colorShader);
 	lightMesh.SetObjectColor(glm::vec3(1.0, 1.0, 1.0));
@@ -138,17 +151,33 @@ int main()
 		cube2.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
 		cube2.Draw(LightingModel::PHONG_TEXTURE);
 
-		cube3.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube3.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
 		cube3.Translate(glm::vec3(-2.0f, 0.0f, -2.0f));
 		cube3.Draw(LightingModel::PHONG_COLOR);
+
+		cube4.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube4.Translate(glm::vec3(-4.0f, 0.0f, -2.0f));
+		cube4.Draw(LightingModel::PHONG_COLOR);
+
+		cube5.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube5.Translate(glm::vec3(-6.0f, 0.0f, -2.0f));
+		cube5.Draw(LightingModel::PHONG_COLOR);
+
+		cube6.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube6.Translate(glm::vec3(-8.0f, 0.0f, -2.0f));
+		cube6.Draw(LightingModel::PHONG_COLOR);
+
+		cube7.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube7.Translate(glm::vec3(-8.0f, 0.0f, -2.0f));
+		cube7.Draw(LightingModel::PHONG_COLOR);
 
 		plane.Translate(glm::vec3(0.0, -0.5, 0.0));
 		plane.Rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 		plane.Scale(glm::vec3(15.0, 15.0, 0.0));
-		plane.Draw();
+		plane.Draw(LightingModel::PHONG_TEXTURE);
 		lightMesh.Translate(glm::vec3(1.0f,1.0f,1.0f));
 		lightMesh.Scale(glm::vec3(0.2, 0.2, 0.2));
-		lightMesh.Draw();
+		lightMesh.Draw(LightingModel::COLOR_ONLY);
 
 		//swap buffers
 		glfwSwapBuffers(windowManager.GetGLFWwindow());
