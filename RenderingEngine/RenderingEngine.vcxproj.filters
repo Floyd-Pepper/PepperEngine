@@ -57,6 +57,9 @@
     <ClCompile Include="Sources\DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Camera.h">
@@ -98,6 +101,9 @@
     <ClInclude Include="Sources\DirectionalLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.vs">
@@ -122,6 +128,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Sources\Shaders\ColorOnlyShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongSpecularShader.fs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

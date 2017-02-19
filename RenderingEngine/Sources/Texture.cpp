@@ -29,26 +29,43 @@ Texture::Texture(char * path, WrappingMethod wrappingMethod, FilteringMethod fil
 	CreateTexture();
 }*/
 
-Texture::Texture(char * path, WrappingMethod wrappingMethod, FilteringMethod filteringMethod) : _Path(path), _WrappingMethod(wrappingMethod), _FilteringMethod(filteringMethod)
+Texture::Texture(const char * path, TextureType type, WrappingMethod wrappingMethod, FilteringMethod filteringMethod) : _Path(path), _WrappingMethod(wrappingMethod), _FilteringMethod(filteringMethod)
 {
+	SetType(type);
 	CreateTexture();
 }
 
 void Texture::CreateTexture()
 {
-	LoadTexture(_Path);
+	LoadTexture(_Path.c_str());
 	GenerateTexture();
 }
 
-void Texture::LoadTexture(char* path)
+void Texture::SetType(TextureType type)
+{
+	switch (type) 
+	{
+	case IMAGE:
+		_Type = "texture_image";
+		break;
+	case SPECULAR:
+		_Type = "texture_specular";
+		break;
+	case DIFFUSE:
+		_Type = "texture_diffuse";
+		break;
+	}
+}
+
+void Texture::LoadTexture(const char* path)
 {
 	_Image = SOIL_load_image(path, &_Width, &_Height, 0, SOIL_LOAD_RGB);
 }
 
 void Texture::GenerateTexture()
 {
-	glGenTextures(1, &_Texture);
-	glBindTexture(GL_TEXTURE_2D, _Texture);
+	glGenTextures(1, &_Id);
+	glBindTexture(GL_TEXTURE_2D, _Id);
 	
 	SetWrappingParameters();
 	SetFilteringParameters();
