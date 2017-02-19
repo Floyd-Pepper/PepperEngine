@@ -11,8 +11,9 @@ public:
 	void SetUniformValues(GLuint programID, unsigned int lightNumber);
 
 	virtual void Abstract() {}
+
 private:
 	GLfloat _Constant;
 	GLfloat _Linear;
-	GLfloat _Quadratic;
+	GLfloat _Quadratic;	
 };

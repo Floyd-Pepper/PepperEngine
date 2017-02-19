@@ -20,7 +20,7 @@ public:
 
 	virtual void ConfigureMesh();
 	void ConfigureMeshIndices(); // a supprimer ?
-	virtual void Draw();
+	//virtual void Draw();
 	void Draw(LightingModel lightingModel);
 	void SetTexturesUniformValues();
 	void SetMvpUniformValue();

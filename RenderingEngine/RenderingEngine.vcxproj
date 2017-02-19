@@ -57,10 +57,6 @@
     <None Include="Sources\Shaders\PhongColorShader.vs" />
     <None Include="Sources\Shaders\PhongTextureShader.fs" />
     <None Include="Sources\Shaders\PhongTextureShader.vs" />
-    <None Include="Sources\Shaders\TextureNoLighting.fs" />
-    <None Include="Sources\Shaders\TextureNoLighting.vs" />
-    <None Include="Sources\Shaders\TextureShader.fs" />
-    <None Include="Sources\Shaders\TextureShader.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D90E3720-9627-45BD-92A1-31A8DA736843}</ProjectGuid>

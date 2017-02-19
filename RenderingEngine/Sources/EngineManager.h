@@ -6,6 +6,7 @@
 #include "Shader.h"
 
 #include <map>
+#include <vector>
 
 class EngineManager 
 {
@@ -14,14 +15,15 @@ public:
 
 	void InitializeEngine();
 
+	void SetLightUniformValues();
+
 	Camera& GetCamera() { return _Camera; }
 	void SetCamera(const Camera& camera) { _Camera = camera; }
 
-	DirectionalLight* GetDirectionalLight() { return _DirectionalLight; }
-	void SetDirectionalLight(DirectionalLight* light) { _DirectionalLight = light; }
-
-	PointLight* GetPointLight() { return _PointLight; }
-	void SetPointLight(PointLight* light) { _PointLight = light; }
+	const std::vector<PointLight>& GetPointLights() { return _PointLights; }
+	void AddPointLight(const PointLight& light) { _PointLights.push_back(light); }
+	const std::vector<DirectionalLight>& GetDirectionalLights() { return _DirectionalLights; }
+	void AddDirectionalLight(const DirectionalLight& light) { _DirectionalLights.push_back(light); }
 
 	const Shader& GetShaderByName(const std::string shaderName)
 	{
@@ -32,9 +34,9 @@ private:
 	static EngineManager _Instance;
 	Camera _Camera;
 
-	DirectionalLight* _DirectionalLight;
-	PointLight* _PointLight;
 	std::map<std::string, Shader> _Shaders;
+	std::vector<PointLight> _PointLights;
+	std::vector<DirectionalLight> _DirectionalLights;
 
 	EngineManager();
 	~EngineManager() {}

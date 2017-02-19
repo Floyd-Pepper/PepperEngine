@@ -1,4 +1,7 @@
 #version 330 core
+
+#define MAX_LIGHTS 10
+
 struct DirLight {
     vec3 direction;
     vec3 ambient;
@@ -17,8 +20,6 @@ struct PointLight {
     vec3 diffuse;
     vec3 specular;
 };
-//#define NR_POINT_LIGHTS 4  
-//uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 struct Material {
     vec3 ambient;
@@ -33,10 +34,11 @@ in vec2 TexCoord;
 
 out vec4 color;
 
-//uniform Light light; 
 uniform vec3 viewPos;
-uniform DirLight dirLight;
-uniform PointLight pointLights;
+uniform int dirLightCount;
+uniform int pointLightCount;
+uniform DirLight dirLights[MAX_LIGHTS];
+uniform PointLight pointLights[MAX_LIGHTS];
 uniform Material material;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -48,12 +50,14 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
 
+	vec3 result;
+
     // Phase 1: Directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+	for(int i = 0; i < dirLightCount; i++)
+        result += CalcDirLight(dirLights[i], norm, viewDir);
     // Phase 2: Point lights
- //   for(int i = 0; i < NR_POINT_LIGHTS; i++)
-   //     result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
-	result += CalcPointLight(pointLights, norm, FragPos, viewDir);    
+    for(int i = 0; i < pointLightCount; i++)
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
     // Phase 3: Spot light
     //result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
     

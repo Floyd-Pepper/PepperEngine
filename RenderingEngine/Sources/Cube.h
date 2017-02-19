@@ -4,7 +4,6 @@
 class Cube : public Mesh
 {
 public:
-	//Cube();
-	Cube(Shader& shader);
+	Cube();
 	~Cube() {}
 };

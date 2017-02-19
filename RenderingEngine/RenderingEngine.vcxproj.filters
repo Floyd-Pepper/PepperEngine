@@ -100,18 +100,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Sources\Shaders\TextureNoLighting.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\TextureNoLighting.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\TextureShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\TextureShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Shader.vs">
       <Filter>Shaders</Filter>
     </None>
