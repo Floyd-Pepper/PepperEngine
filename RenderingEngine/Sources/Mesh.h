@@ -11,13 +11,21 @@
 #include <vector>
 #include <memory>
 
+struct Vertex {
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoords;
+};
+
 class Mesh
 {
 public:
 	Mesh() {}
-	Mesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material = Material());
+	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures);
+	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material = Material());	
 	~Mesh() {}
 
+	void FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals);
 	virtual void ConfigureMesh();
 	void ConfigureMeshIndices(); // a supprimer ?
 	//virtual void Draw();
@@ -44,19 +52,15 @@ public:
 	const Material& GetMaterial() const { return _Material; }
 	void SetMaterial(Material& material) { _Material = material; }
 
-	const Texture& GetSpecularMap() const { return *_SpecularMap; }
-	void SetSpecularMap(Texture& texture) { _SpecularMap = &texture; }
-
 protected:
 	GLuint _VAO;
-	std::vector<GLfloat> _Vertices;
-	std::vector<GLuint> _Indices; // a supprimer ?
+	std::vector<Vertex> _Vertices;
+	std::vector<GLuint> _Indices;
 	GLint _VerticesNumber;
 
 	glm::mat4 _Transformation;
 
-	std::vector <std::shared_ptr<Texture>> _Textures;
-	Texture* _SpecularMap = nullptr;
+	std::vector<Texture> _Textures;
 	Material _Material;
 	glm::vec3 _ObjectColor = glm::vec3(1.0f,1.0f,1.0f);
 	Shader _Shader;

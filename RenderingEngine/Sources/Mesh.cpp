@@ -6,13 +6,35 @@
 #include <GLFW/glfw3.h>
 
 #include <string>
+#include <sstream>
+#include <iostream>
 
-Mesh::Mesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material) : _Shader(shader), _Material(material)
+Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures)
+{
+	_Vertices = vertices;
+	_Indices = indices;
+	_Textures = textures;
+	ConfigureMesh();
+}
+
+Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material) : _Shader(shader), _Material(material)
 {
 	_Vertices = vertices;
 	_Indices = indices;
 	_Transformation = glm::mat4();
 	ConfigureMesh();
+}
+
+void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals)
+{
+	for (int i = 0; i < positions.size(); ++i)
+	{
+		Vertex vert;
+		vert.Position = positions[i];
+		vert.Normal = normals[i];
+		vert.TexCoords = UV[i];
+		_Vertices.push_back(vert);
+	}	
 }
 
 void Mesh::ConfigureMesh()
@@ -27,15 +49,21 @@ void Mesh::ConfigureMesh()
 	glBindVertexArray(_VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, _Vertices.size() * sizeof(GLfloat), &_Vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _Vertices.size() * sizeof(Vertex), &_Vertices[0], GL_STATIC_DRAW);
+	// indices
+	if (!_Indices.empty())
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, _Indices.size() * sizeof(GLuint), &_Indices[0], GL_STATIC_DRAW);
+	}
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	// Normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
 	glEnableVertexAttribArray(1);
 	// TexCoord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 	glEnableVertexAttribArray(2);
 	
 	glBindVertexArray(0); // Unbind VAO
@@ -168,10 +196,6 @@ void Mesh::ConfigureMeshIndices()
 
 void Mesh::Draw(LightingModel lightingModel)
 {
-	if (!_Textures.empty())
-	{
-		SetTexturesUniformValues();
-	}
 	switch (lightingModel)
 	{
 		case LightingModel::PHONG_COLOR:
@@ -219,9 +243,41 @@ void Mesh::Draw(LightingModel lightingModel)
 				++lightNumber;
 			}
 			EngineManager::Instance().SetLightUniformValues();
+			if (!_Textures.empty())
+			{
+				SetTexturesUniformValues();
+			}
 			SetMaterialUniformValues();
 			break;
 		}	
+		case LightingModel::PHONG_SPECULAR:
+		{
+			_Shader = EngineManager::Instance().GetShaderByName("PhongSpecularShader");
+			_Shader.Use();
+			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
+			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
+			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
+			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
+			int lightNumber = 0;
+			for (auto pointLight : EngineManager::Instance().GetPointLights())
+			{
+				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			lightNumber = 0;
+			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
+			{
+				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			EngineManager::Instance().SetLightUniformValues();
+			if (!_Textures.empty())
+			{
+				SetTexturesUniformValues();
+			}
+			//SetMaterialUniformValues();
+			break;
+		}
 		case LightingModel::DIFFUSE_ONLY:
 		{
 			break;
@@ -237,7 +293,10 @@ void Mesh::Draw(LightingModel lightingModel)
 	SetMvpUniformValue();
 	//Drawing
 	glBindVertexArray(_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, _VerticesNumber);
+	if(_Indices.empty())
+		glDrawArrays(GL_TRIANGLES, 0, _VerticesNumber);
+	else
+		glDrawElements(GL_TRIANGLES, _Indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 	// reinitialization of the transformation matrix
@@ -247,15 +306,24 @@ void Mesh::Draw(LightingModel lightingModel)
 
 void Mesh::SetTexturesUniformValues()
 {
+	GLuint diffuseNr = 1;
+	GLuint specularNr = 1;
 	int i = 0;
 	for (const auto& texture : _Textures)
 	{
-		GLuint in = texture->GetTextureID();
+		GLuint in = texture.GetTextureID();
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
-		//std::string strName = "texture" + std::to_string(i);
-		//const GLchar* textureName = strName.c_str();
-		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "material.diffuse"), i);
+		std::stringstream ss;
+		std::string number;
+		std::string name = texture.GetType();
+		if (name == "texture_diffuse")
+			ss << diffuseNr++;
+		else if (name == "texture_specular")
+			ss << specularNr++;
+		number = ss.str();
+		GLint loc = glGetUniformLocation(_Shader.GetProgram(), ("material." + name + number).c_str());
+		glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
+		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), ("material." + name + number).c_str()), i);	
 		i++;
 	}
 }
@@ -271,7 +339,7 @@ void Mesh::SetMvpUniformValue()
 	Camera camera = EngineManager::Instance().GetCamera();
 	view = camera.GetViewMatrix();
 	// projection
-	projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 100.0f);
 	// MVP matrix loc
 	GLint modelLoc = glGetUniformLocation(_Shader.GetProgram(), "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -283,24 +351,6 @@ void Mesh::SetMvpUniformValue()
 
 void Mesh::SetMaterialUniformValues()
 {
-	/*Camera camera = EngineManager::Instance().GetCamera();
-	//color & lightning
-	GLint viewPosLoc = glGetUniformLocation(_Shader.GetProgram(), "viewPos");
-	glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
-	GLint lightPosLoc = glGetUniformLocation(_Shader.GetProgram(), "light.position");
-	GLint lightAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "light.ambient");
-	GLint lightDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "light.diffuse");
-	GLint lightSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "light.specular");
-	PointLight light = EngineManager::Instance().GetPointLight();
-	glm::vec3 lightPosition = light.GetPosition();
-	glUniform3f(lightPosLoc, lightPosition.x, lightPosition.y, lightPosition.z);
-	glm::vec3 lightAmbient = light.GetAmbient();
-	glUniform3f(lightAmbientLoc, lightAmbient.x, lightAmbient.y, lightAmbient.z);
-	glm::vec3 lightDiffuse = light.GetDiffuse();
-	glUniform3f(lightDiffuseLoc, lightDiffuse.x, lightDiffuse.y, lightDiffuse.z);
-	glm::vec3 lightSpecular = light.GetSpecular();
-	glUniform3f(lightSpecularLoc, lightSpecular.x, lightSpecular.y, lightSpecular.z);*/
-
 	// material
 	GLint matAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "material.ambient");
 	GLint matDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "material.diffuse");
@@ -324,9 +374,9 @@ void Mesh::DrawIndices()
 	int i = 0;
 	for (const auto& texture : _Textures)
 	{
-		GLuint in = texture->GetTextureID();
+		GLuint in = texture.GetTextureID();
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+		glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
 		std::string strName = "texture" + std::to_string(i);
 		const GLchar* textureName = strName.c_str();
 		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), textureName), i);
@@ -341,7 +391,7 @@ void Mesh::DrawIndices()
 	glm::mat4 projection;
 	model = glm::rotate(model, -55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 100.0f);
 	glm::mat4 MVP = projection * view * model;
 	GLint MVPLoc = glGetUniformLocation(_Shader.GetProgram(), "MVP");
 	glUniformMatrix4fv(MVPLoc, 1, GL_FALSE, glm::value_ptr(MVP));
@@ -358,7 +408,7 @@ void Mesh::DrawIndices()
 
 void Mesh::AddTexture(Texture& texture)
 {
-	_Textures.push_back(std::make_shared<Texture>(texture));
+	_Textures.push_back(texture);
 }
 
 void Mesh::SetObjectColor(glm::vec3 color)
