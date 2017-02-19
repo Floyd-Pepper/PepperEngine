@@ -5,6 +5,6 @@ class Plane : public Mesh
 {
 public:
 	//Plane();
-	Plane(Shader& shader);
+	Plane();
 	~Plane();
 };

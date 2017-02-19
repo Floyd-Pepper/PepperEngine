@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <string>
+
 class Light
 {
 public:
@@ -15,6 +17,9 @@ public:
 	const glm::vec3& GetAmbient() { return _Ambient; }
 	const glm::vec3& GetDiffuse() { return _Diffuse; }
 	const glm::vec3& GetSpecular() { return _Specular; }
+
+protected:
+	std::string GetUniformName(const char* lightArrayName, const char* propertyName, size_t lightIndex);
 
 protected:
 	glm::vec3 _Position;

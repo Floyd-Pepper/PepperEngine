@@ -6,9 +6,8 @@
 
 }*/
 
-Plane::Plane(Shader& shader)
+Plane::Plane()
 {
-	_Shader = shader;
 	_VerticesNumber = 6;
 	_Vertices = {
 		// Positions          // Normals           // Texture Coords

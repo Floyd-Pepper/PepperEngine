@@ -22,3 +22,43 @@ void EngineManager::InitializeEngine()
 	Shader colorShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.fs");
 	_Shaders["ColorShader"] = colorShader;
 }
+
+void EngineManager::SetLightUniformValues()
+{
+	Shader phongColorShader = GetShaderByName("PhongColorShader");
+	phongColorShader.Use();
+	GLint dirLightCount = glGetUniformLocation(phongColorShader.GetProgram(), "dirLightCount");
+	GLint pointLightCount = glGetUniformLocation(phongColorShader.GetProgram(), "pointLightCount");
+	glUniform1i(dirLightCount, GetDirectionalLights().size());
+	glUniform1i(pointLightCount, GetPointLights().size());
+	int lightNumber = 0;
+	for (auto pointLight : GetPointLights())
+	{
+		pointLight.SetUniformValues(phongColorShader.GetProgram(), lightNumber);
+		++lightNumber;
+	}
+	lightNumber = 0;
+	for (auto directionalLight : GetDirectionalLights())
+	{
+		directionalLight.SetUniformValues(phongColorShader.GetProgram(), lightNumber);
+		++lightNumber;
+	}
+	Shader phongTextureShader = GetShaderByName("PhongTextureShader");
+	phongTextureShader.Use();
+	dirLightCount = glGetUniformLocation(phongTextureShader.GetProgram(), "dirLightCount");
+	pointLightCount = glGetUniformLocation(phongTextureShader.GetProgram(), "pointLightCount");
+	glUniform1i(dirLightCount, GetDirectionalLights().size());
+	glUniform1i(pointLightCount, GetPointLights().size());
+	lightNumber = 0;
+	for (auto pointLight : GetPointLights())
+	{
+		pointLight.SetUniformValues(phongTextureShader.GetProgram(), lightNumber);
+		++lightNumber;
+	}
+	lightNumber = 0;
+	for (auto directionalLight : GetDirectionalLights())
+	{
+		directionalLight.SetUniformValues(phongTextureShader.GetProgram(), lightNumber);
+		++lightNumber;
+	}
+}

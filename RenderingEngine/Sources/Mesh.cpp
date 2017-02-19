@@ -70,9 +70,10 @@ void Mesh::ConfigureMeshIndices()
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw()
+// ancienne version
+/*void Mesh::Draw()
 {
-	// textures
+	// textures*/
 	/*int i = 0;
 	for (const auto& texture : _Textures)
 	{
@@ -84,7 +85,7 @@ void Mesh::Draw()
 		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), textureName), i);
 		i++;
 	}*/
-	int i = 0;
+	/*int i = 0;
 	for (const auto& texture : _Textures)
 	{
 		GLuint in = texture->GetTextureID();
@@ -94,7 +95,7 @@ void Mesh::Draw()
 		//const GLchar* textureName = strName.c_str();
 		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "material.diffuse"), i);
 		i++;
-	}
+	}*/
 	/*if (nullptr != _SpecularMap)
 	{
 		GLuint in = _SpecularMap->GetTextureID();
@@ -104,7 +105,7 @@ void Mesh::Draw()
 	}*/
 
 	//activate shader
-	_Shader.Use();
+	/*_Shader.Use();
 
 	//transformations (MVP)
 	glm::mat4 model;
@@ -135,7 +136,7 @@ void Mesh::Draw()
 	GLint lightAmbientLoc = glGetUniformLocation(_Shader.GetProgram(), "light.ambient");
 	GLint lightDiffuseLoc = glGetUniformLocation(_Shader.GetProgram(), "light.diffuse");
 	GLint lightSpecularLoc = glGetUniformLocation(_Shader.GetProgram(), "light.specular");
-	PointLight* light = EngineManager::Instance().GetPointLight();
+	PointLight light = EngineManager::Instance().GetPointLight();
 	glm::vec3 lightPosition = light->GetPosition();
 	glUniform3f(lightPosLoc, lightPosition.x, lightPosition.y, lightPosition.z);
 	glm::vec3 lightAmbient = light->GetAmbient();
@@ -163,7 +164,7 @@ void Mesh::Draw()
 	// reinitialization of the transformation matrix
 	_Transformation = glm::mat4();
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
+}*/
 
 void Mesh::Draw(LightingModel lightingModel)
 {
@@ -177,10 +178,23 @@ void Mesh::Draw(LightingModel lightingModel)
 		{
 			_Shader = EngineManager::Instance().GetShaderByName("PhongColorShader");
 			_Shader.Use();
-			if (EngineManager::Instance().GetPointLight())
-				EngineManager::Instance().GetPointLight()->SetUniformValues(_Shader.GetProgram(), 0);
-			if (EngineManager::Instance().GetDirectionalLight())
-				EngineManager::Instance().GetDirectionalLight()->SetUniformValues(_Shader.GetProgram());
+			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
+			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
+			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
+			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
+			int lightNumber = 0;
+			for (auto pointLight : EngineManager::Instance().GetPointLights())
+			{
+				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			lightNumber = 0;
+			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
+			{
+				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			//EngineManager::Instance().SetLightUniformValues();
 			SetMaterialUniformValues();
 			break;
 		}		
@@ -188,10 +202,23 @@ void Mesh::Draw(LightingModel lightingModel)
 		{
 			_Shader = EngineManager::Instance().GetShaderByName("PhongTextureShader");
 			_Shader.Use();
-			if(EngineManager::Instance().GetPointLight())
-				EngineManager::Instance().GetPointLight()->SetUniformValues(_Shader.GetProgram(), 0);
-			if(EngineManager::Instance().GetDirectionalLight())
-				EngineManager::Instance().GetDirectionalLight()->SetUniformValues(_Shader.GetProgram());
+			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
+			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
+			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
+			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
+			int lightNumber = 0;
+			for (auto pointLight : EngineManager::Instance().GetPointLights())
+			{
+				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			lightNumber = 0;
+			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
+			{
+				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			EngineManager::Instance().SetLightUniformValues();
 			SetMaterialUniformValues();
 			break;
 		}	

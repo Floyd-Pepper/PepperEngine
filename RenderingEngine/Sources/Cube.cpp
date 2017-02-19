@@ -2,14 +2,8 @@
 
 #include <string>
 
-/*Cube::Cube()
+Cube::Cube()
 {
-	ConfigureMesh();
-}*/
-
-Cube::Cube(Shader& shader)
-{
-	_Shader = shader;
 	_VerticesNumber = 36;
 	_Vertices = {
 		// Positions          // Normals           // Texture Coords
