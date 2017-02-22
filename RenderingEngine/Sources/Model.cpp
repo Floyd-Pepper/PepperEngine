@@ -2,7 +2,7 @@
 
 #include <SOIL\SOIL.h>
 
-GLint TextureFromFile(const char* path, std::string directory);
+GLint TextureFromFile(const char* path, const std::string& directory);
 
 void Model::Draw(LightingModel lightingModel)
 {
@@ -10,7 +10,7 @@ void Model::Draw(LightingModel lightingModel)
 		_Meshes[i].Draw(lightingModel);
 }
 
-void Model::LoadModel(std::string path)
+void Model::LoadModel(const std::string& path)
 {
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -43,7 +43,7 @@ void Model::ProcessNode(aiNode * node, const aiScene * scene)
 Mesh Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<Vertex> vertices;
-	std:: vector<GLuint> indices;
+	std::vector<GLuint> indices;
 	std::vector<Texture> textures;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -93,7 +93,7 @@ Mesh Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 	return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
+std::vector<Texture> Model::LoadMaterialTextures(aiMaterial * mat, aiTextureType type, const std::string& typeName)
 {
 	std::vector<Texture> textures;
 	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
@@ -124,7 +124,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial * mat, aiTextureType
 	return textures;
 }
 
-GLint TextureFromFile(const char* path, std::string directory)
+GLint TextureFromFile(const char* path, const std::string& directory)
 {
 	//Generate texture ID and load texture data 
 	std::string filename = std::string(path);
@@ -133,6 +133,8 @@ GLint TextureFromFile(const char* path, std::string directory)
 	glGenTextures(1, &textureID);
 	int width, height;
 	unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+	std::string err = SOIL_last_result();
+	std::cout << err << std::endl;
 	// Assign texture to ID
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -148,7 +150,7 @@ GLint TextureFromFile(const char* path, std::string directory)
 	return textureID;
 }
 
-void Model::SetMaterial(Material material)
+void Model::SetMaterial(const Material& material)
 {
 	for (auto& mesh : _Meshes)
 		mesh.SetMaterial(material);

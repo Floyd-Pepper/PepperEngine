@@ -19,7 +19,7 @@ public:
 	const glm::vec3& GetSpecular() { return _Specular; }
 
 protected:
-	std::string GetUniformName(const char* lightArrayName, const char* propertyName, size_t lightIndex);
+	void GetUniformName(std::string& name, const std::string& lightArrayName, const std::string& propertyName, unsigned int lightIndex);
 
 protected:
 	glm::vec3 _Position;

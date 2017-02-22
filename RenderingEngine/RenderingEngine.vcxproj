@@ -58,6 +58,7 @@
     <None Include="Sources\Shaders\PhongColorShader.fs" />
     <None Include="Sources\Shaders\PhongColorShader.vs" />
     <None Include="Sources\Shaders\PhongSpecularShader.fs" />
+    <None Include="Sources\Shaders\PhongSpecularShader.vs" />
     <None Include="Sources\Shaders\PhongTextureShader.fs" />
     <None Include="Sources\Shaders\PhongTextureShader.vs" />
   </ItemGroup>

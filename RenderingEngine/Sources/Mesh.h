@@ -50,7 +50,7 @@ public:
 	void SetShader(Shader& shader) { _Shader = shader; }
 
 	const Material& GetMaterial() const { return _Material; }
-	void SetMaterial(Material& material) { _Material = material; }
+	void SetMaterial(const Material& material) { _Material = material; }
 
 protected:
 	GLuint _VAO;
