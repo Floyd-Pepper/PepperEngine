@@ -242,7 +242,7 @@ void Mesh::Draw(LightingModel lightingModel)
 				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
 				++lightNumber;
 			}
-			EngineManager::Instance().SetLightUniformValues();
+			//EngineManager::Instance().SetLightUniformValues();
 			if (!_Textures.empty())
 			{
 				SetTexturesUniformValues();
@@ -270,12 +270,12 @@ void Mesh::Draw(LightingModel lightingModel)
 				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
 				++lightNumber;
 			}
-			EngineManager::Instance().SetLightUniformValues();
+			//EngineManager::Instance().SetLightUniformValues();
 			if (!_Textures.empty())
 			{
 				SetTexturesUniformValues();
 			}
-			//SetMaterialUniformValues();
+			SetMaterialUniformValues();
 			break;
 		}
 		case LightingModel::DIFFUSE_ONLY:
@@ -323,7 +323,7 @@ void Mesh::SetTexturesUniformValues()
 		number = ss.str();
 		GLint loc = glGetUniformLocation(_Shader.GetProgram(), ("material." + name + number).c_str());
 		glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
-		glUniform1i(glGetUniformLocation(_Shader.GetProgram(), ("material." + name + number).c_str()), i);	
+		glUniform1i(loc, i);
 		i++;
 	}
 }

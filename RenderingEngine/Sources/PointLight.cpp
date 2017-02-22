@@ -10,13 +10,21 @@ void PointLight::SetUniformValues(GLuint programID, unsigned int lightNumber)
 {
 	Camera camera = EngineManager::Instance().GetCamera();
 	GLint viewPosLoc = glGetUniformLocation(programID, "viewPos");
+	std::string name;
 	glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("pointLights", "position", lightNumber).c_str()), _Position.x, _Position.y, _Position.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("pointLights", "ambient", lightNumber).c_str()), _Ambient.x, _Ambient.y, _Ambient.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("pointLights", "diffuse", lightNumber).c_str()), _Diffuse.x, _Diffuse.y, _Diffuse.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("pointLights", "specular", lightNumber).c_str()), _Specular.x, _Specular.y, _Specular.z);
-	glUniform1f(glGetUniformLocation(programID, GetUniformName("pointLights", "constant", lightNumber).c_str()), _Constant);
-	glUniform1f(glGetUniformLocation(programID, GetUniformName("pointLights", "constant", lightNumber).c_str()), _Constant);
-	glUniform1f(glGetUniformLocation(programID, GetUniformName("pointLights", "linear", lightNumber).c_str()), _Linear);
-	glUniform1f(glGetUniformLocation(programID, GetUniformName("pointLights", "quadratic", lightNumber).c_str()), _Quadratic);
+	
+	GetUniformName(name, "pointLights", "position", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Position.x, _Position.y, _Position.z);
+	GetUniformName(name, "pointLights", "ambient", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Ambient.x, _Ambient.y, _Ambient.z);
+	GetUniformName(name, "pointLights", "diffuse", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Diffuse.x, _Diffuse.y, _Diffuse.z);
+	GetUniformName(name, "pointLights", "specular", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Specular.x, _Specular.y, _Specular.z);
+	GetUniformName(name, "pointLights", "constant", lightNumber);
+	glUniform1f(glGetUniformLocation(programID, name.c_str()), _Constant);
+	GetUniformName(name, "pointLights", "linear", lightNumber);
+	glUniform1f(glGetUniformLocation(programID, name.c_str()), _Linear);
+	GetUniformName(name, "pointLights", "quadratic", lightNumber);
+	glUniform1f(glGetUniformLocation(programID, name.c_str()), _Quadratic);
 }

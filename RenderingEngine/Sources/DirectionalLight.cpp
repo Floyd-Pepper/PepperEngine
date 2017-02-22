@@ -11,8 +11,13 @@ void DirectionalLight::SetUniformValues(GLuint programID, unsigned int lightNumb
 	Camera camera = EngineManager::Instance().GetCamera();
 	GLint viewPosLoc = glGetUniformLocation(programID, "viewPos");
 	glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("dirLights", "direction", lightNumber).c_str()), _Direction.x, _Direction.y, _Direction.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("dirLights", "ambient", lightNumber).c_str()), _Ambient.x, _Ambient.y, _Ambient.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("dirLights", "diffuse", lightNumber).c_str()), _Diffuse.x, _Diffuse.y, _Diffuse.z);
-	glUniform3f(glGetUniformLocation(programID, GetUniformName("dirLights", "specular", lightNumber).c_str()), _Specular.x, _Specular.y, _Specular.z);
+	std::string name;
+	GetUniformName(name, "dirLights", "direction", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Direction.x, _Direction.y, _Direction.z);
+	GetUniformName(name, "dirLights", "ambient", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Ambient.x, _Ambient.y, _Ambient.z);
+	GetUniformName(name, "dirLights", "diffuse", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Diffuse.x, _Diffuse.y, _Diffuse.z);
+	GetUniformName(name, "dirLights", "specular", lightNumber);
+	glUniform3f(glGetUniformLocation(programID, name.c_str()), _Specular.x, _Specular.y, _Specular.z);
 }

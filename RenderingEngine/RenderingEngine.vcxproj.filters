@@ -133,5 +133,8 @@
     <None Include="Sources\Shaders\PhongSpecularShader.fs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Sources\Shaders\PhongSpecularShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
