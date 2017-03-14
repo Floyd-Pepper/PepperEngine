@@ -20,6 +20,7 @@
 #include "Cube.h"
 #include "Plane.h"
 #include "Model.h"
+#include "Skybox.h"
 
 #include "Defs.h"
 
@@ -62,12 +63,22 @@ int main()
 	EngineManager::Instance().AddPointLight(pointLight);
 	PointLight pointLight2(glm::vec3(-2.0f, 3.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(0.9f, 0.9f, 0.0f), glm::vec3(0.9f, 0.9f, 0.0f));
 	EngineManager::Instance().AddPointLight(pointLight2);
+	/*PointLight pointLight(glm::vec3(1.0f, 1.0f, 1.0f));
+	EngineManager::Instance().AddPointLight(pointLight);
+	PointLight pointLight2(glm::vec3(-2.0f, 3.0f, -2.0f));
+	EngineManager::Instance().AddPointLight(pointLight2);*/
 
 	Texture texture1("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container.jpg", Texture::DIFFUSE, Texture::MirroredRepeat, Texture::Nearest);
 	Texture texture2("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\awesomeface.png", Texture::IMAGE, Texture::MirroredRepeat, Texture::Nearest);
 	Texture containerTexture("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container2.png", Texture::DIFFUSE);
 	Texture containerSpecularMap("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container2_specular.png", Texture::SPECULAR);
 	Texture parquet("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\parquet.png", Texture::DIFFUSE);
+	Texture brickwallTexture("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\brickwall.jpg", Texture::DIFFUSE);
+	//Texture woodTexture("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\wood.jpg", Texture::DIFFUSE);
+	Texture chairTexture("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/Old chair/container.jpg", Texture::DIFFUSE);
+
+	Skybox skybox;
+	skybox.ConfigureSkybox();
 
 	//cube centrale (couleur)
 	Cube cube;
@@ -100,25 +111,24 @@ int main()
 	Cube lightMesh2;
 	lightMesh2.SetObjectColor(glm::vec3(0.9f, 0.9f, 0.0f));
 
-	Plane plane;
+	Plane plane(10, 10, 5);
 	plane.AddTexture(parquet);
 	plane.SetMaterial(cubeMaterial);
 
+	Plane wall1(10, 10, 5);
+	wall1.AddTexture(brickwallTexture);
+	Plane wall2(10, 10, 5);
+	wall2.AddTexture(brickwallTexture);
+	Plane wall3(10, 10, 5);
+	wall3.AddTexture(brickwallTexture);
+	Plane wall4(10, 10, 5);
+	wall4.AddTexture(brickwallTexture);
+
 	Model nano("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/nanosuit/nanosuit.obj");
 	Model teapot("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/teapot.obj");
-	Model table("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/wooden_table/table.obj");
-	Model table2("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/old_wooden_table/old_wooden_table.FBX");
-	//Model barrel("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/ton_3ds/barrel.3ds");
-	//Model cobra("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/AC Cobra/Shelby.obj");
-	Model barrel_box("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/boxes_barrel/OBJ/Barrel_Boxes_Grain_Sack.obj");
-
-	//Model maxplanck("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/maxplanck.ply");
-	//nano.SetMaterial(cubeMaterial);
-//	Model human("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/male_civilian_8/male_civilian_8/human.3DS");
+	Model island("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/Small Tropical Island/Small Tropical Island.obj");
 	
 	teapot.SetMaterial(cubeMaterial);
-	table.SetMaterial(cubeMaterial);
-	table2.SetMaterial(cubeMaterial);
 
 	while (!glfwWindowShouldClose(windowManager.GetGLFWwindow()))
 	{
@@ -130,64 +140,39 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		cube.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		//cube.Draw(LightingModel::PHONG_COLOR);
+		skybox.Draw();
 
 		cube2.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		//cube2.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
+		cube2.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
 	
-		//cube2.Draw(LightingModel::PHONG_SPECULAR);
+		cube2.Draw(LightingModel::PHONG_SPECULAR);
 
-		cube3.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube3.Translate(glm::vec3(-2.0f, 0.0f, -2.0f));
-		//cube3.Draw(LightingModel::PHONG_COLOR);
-
-		cube4.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube4.Translate(glm::vec3(-4.0f, 0.0f, -2.0f));
-		//cube4.Draw(LightingModel::PHONG_COLOR);
-
-		cube5.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube5.Translate(glm::vec3(-6.0f, 0.0f, -2.0f));
-		//cube5.Draw(LightingModel::PHONG_COLOR);
-
-		cube6.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube6.Translate(glm::vec3(-8.0f, 0.0f, -2.0f));
-		//cube6.Draw(LightingModel::PHONG_COLOR);
-
-		cube7.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube7.Translate(glm::vec3(-8.0f, 0.0f, -2.0f));
-		//cube7.Draw(LightingModel::PHONG_COLOR);
-
-		plane.Translate(glm::vec3(0.0, -0.5, 0.0));
 		plane.Rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
-		plane.Scale(glm::vec3(15.0, 15.0, 0.0));
-		plane.Draw(LightingModel::PHONG_TEXTURE);
+		plane.Scale(glm::vec3(15.0, 15.0, 15.0));
+		//plane.Draw(LightingModel::PHONG_TEXTURE);
+
+		wall1.Scale(glm::vec3(15.0, 15.0, 15.0));
+		//wall1.Draw(LightingModel::PHONG_TEXTURE);
+
 		lightMesh.Translate(glm::vec3(2.0f,3.0f,1.0f));
 		lightMesh.Scale(glm::vec3(0.2, 0.2, 0.2));
-		//lightMesh.Draw(LightingModel::COLOR_ONLY);
+		lightMesh.Draw(LightingModel::COLOR_ONLY);
 
 		lightMesh2.Translate(glm::vec3(-2.0f,3.0f, -2.0f));
 		lightMesh2.Scale(glm::vec3(0.2, 0.2, 0.2));
-		//lightMesh2.Draw(LightingModel::COLOR_ONLY);
+		lightMesh2.Draw(LightingModel::COLOR_ONLY);
 
 		nano.Rotate((GLfloat)glfwGetTime() * 50, glm::vec3(0.0f, 1.0f, 0.0f));
 		nano.Scale(glm::vec3(0.25f, 0.25f, 0.25f));
 		nano.Draw(LightingModel::PHONG_SPECULAR);
 
 		teapot.Translate(glm::vec3(-4.0f, 0.0f, -6.0f));
-		//teapot.Draw(LightingModel::PHONG_COLOR);
+		teapot.Draw(LightingModel::PHONG_COLOR);
 
-		table.Scale(glm::vec3(0.05f, 0.05f, 0.05f));
-		table.Draw(LightingModel::PHONG_TEXTURE);
+		island.Translate(glm::vec3(0.0f, -5.0f, 0.0f));
+		island.Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+		island.Draw(LightingModel::PHONG_SPECULAR);
 
-		//barrel.Scale(glm::vec3(0.05f, 0.05f, 0.05f));
-		//barrel.Draw(LightingModel::PHONG_COLOR);
-
-		//human.Translate(glm::vec3(4.0f, 0.0f, 6.0f));
-		//human.Draw(LightingModel::PHONG_COLOR);
-
-		//cobra.Draw(LightingModel::PHONG_SPECULAR);
-		barrel_box.Draw(PHONG_TEXTURE);
 		//swap buffers
 		glfwSwapBuffers(windowManager.GetGLFWwindow());
 	}

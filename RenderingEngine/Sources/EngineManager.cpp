@@ -21,6 +21,8 @@ void EngineManager::InitializeEngine()
 	_Shaders["PhongSpecularShader"] = PhongSpecularShader;
 	Shader colorShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.fs");
 	_Shaders["ColorShader"] = colorShader;
+	Shader skyboxShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.fs");
+	_Shaders["SkyboxShader"] = skyboxShader;
 }
 
 void EngineManager::SetLightUniformValues()

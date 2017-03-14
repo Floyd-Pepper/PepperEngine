@@ -137,6 +137,7 @@ Cube::Cube()
 		glm::vec3(0.0f,  1.0f,  0.0f),
 		glm::vec3(0.0f,  1.0f,  0.0f),
 	};
+	_Topology = TRIANGLES;
 	FillDataStructure(positions, UV, normals);
 	ConfigureMesh();
 }
