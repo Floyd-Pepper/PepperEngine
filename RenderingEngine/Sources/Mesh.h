@@ -17,6 +17,16 @@ struct Vertex {
 	glm::vec2 TexCoords;
 };
 
+enum Topology
+{
+	POINTS,
+	LINES,
+	LINE_STRIP,
+	TRIANGLES,
+	TRIANGLE_STRIP,
+	TRIANGLE_FAN,
+};
+
 class Mesh
 {
 public:
@@ -26,6 +36,7 @@ public:
 	~Mesh() {}
 
 	void FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals);
+	void FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals, std::vector<int> indices);
 	virtual void ConfigureMesh();
 	void ConfigureMeshIndices(); // a supprimer ?
 	//virtual void Draw();
@@ -66,4 +77,5 @@ protected:
 	Shader _Shader;
 
 	LightingModel _LightingModel;
+	Topology _Topology = TRIANGLES;
 };

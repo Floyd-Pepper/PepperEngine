@@ -31,6 +31,7 @@
     <ClCompile Include="Sources\Plane.cpp" />
     <ClCompile Include="Sources\PointLight.cpp" />
     <ClCompile Include="Sources\Shader.cpp" />
+    <ClCompile Include="Sources\Skybox.cpp" />
     <ClCompile Include="Sources\Texture.cpp" />
     <ClCompile Include="Sources\WindowManager.cpp" />
   </ItemGroup>
@@ -47,6 +48,7 @@
     <ClInclude Include="Sources\Plane.h" />
     <ClInclude Include="Sources\PointLight.h" />
     <ClInclude Include="Sources\Shader.h" />
+    <ClInclude Include="Sources\Skybox.h" />
     <ClInclude Include="Sources\Texture.h" />
     <ClInclude Include="Sources\WindowManager.h" />
   </ItemGroup>
@@ -61,6 +63,8 @@
     <None Include="Sources\Shaders\PhongSpecularShader.vs" />
     <None Include="Sources\Shaders\PhongTextureShader.fs" />
     <None Include="Sources\Shaders\PhongTextureShader.vs" />
+    <None Include="Sources\Shaders\Skybox.fs" />
+    <None Include="Sources\Shaders\Skybox.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D90E3720-9627-45BD-92A1-31A8DA736843}</ProjectGuid>

@@ -34,7 +34,25 @@ void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::
 		vert.Normal = normals[i];
 		vert.TexCoords = UV[i];
 		_Vertices.push_back(vert);
+		++_VerticesNumber;
 	}	
+}
+
+void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals, std::vector<int> indices)
+{
+	for (int i = 0; i < positions.size(); ++i)
+	{
+		Vertex vert;
+		vert.Position = positions[i];
+		vert.Normal = normals[i];
+		vert.TexCoords = UV[i];	
+		_Vertices.push_back(vert);
+		++_VerticesNumber;
+	}
+	for (int i = 0; i < indices.size(); ++i)
+	{
+		_Indices.push_back(indices[i]);
+	}
 }
 
 void Mesh::ConfigureMesh()
@@ -289,14 +307,38 @@ void Mesh::Draw(LightingModel lightingModel)
 			SetColorUniformValues();
 			break;
 		}	
+		/*case LightingModel::SKYBOX:
+		{
+			glDepthMask(GL_FALSE);
+			_Shader.Use();
+			glm::mat4 view;
+			glm::mat4 projection;
+			// Camera / View transformation
+			Camera camera = EngineManager::Instance().GetCamera();
+			view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+			// projection
+			projection = glm::perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 100.0f);
+			// MVP matrix loc
+			GLint viewLoc = glGetUniformLocation(_Shader.GetProgram(), "view");
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			GLint projectionLoc = glGetUniformLocation(_Shader.GetProgram(), "projection");
+			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+			glBindVertexArray(_VAO);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, _Id);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glBindVertexArray(0);
+			glDepthMask(GL_TRUE);
+			// ... Draw rest of the scene
+			break;
+		}*/
 	}
 	SetMvpUniformValue();
 	//Drawing
 	glBindVertexArray(_VAO);
 	if(_Indices.empty())
-		glDrawArrays(GL_TRIANGLES, 0, _VerticesNumber);
+		glDrawArrays(_Topology == TRIANGLE_STRIP ? GL_TRIANGLE_STRIP : GL_TRIANGLES, 0, _VerticesNumber);
 	else
-		glDrawElements(GL_TRIANGLES, _Indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(_Topology == TRIANGLE_STRIP ? GL_TRIANGLE_STRIP : GL_TRIANGLES, _Indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 	// reinitialization of the transformation matrix

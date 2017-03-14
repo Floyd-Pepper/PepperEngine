@@ -4,7 +4,7 @@
 class Plane : public Mesh
 {
 public:
-	//Plane();
 	Plane();
+	Plane(unsigned int xSegments, unsigned int ySegments, unsigned int textureRepeatNumber = 1);
 	~Plane();
 };
