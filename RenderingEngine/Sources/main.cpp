@@ -21,6 +21,8 @@
 #include "Plane.h"
 #include "Model.h"
 #include "Skybox.h"
+#include "Framebuffer.h"
+#include "ScreenQuad.h"
 
 #include "Defs.h"
 
@@ -126,9 +128,15 @@ int main()
 
 	Model nano("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/nanosuit/nanosuit.obj");
 	Model teapot("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/teapot.obj");
-	Model island("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/Small Tropical Island/Small Tropical Island.obj");
+	//Model island("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/Small Tropical Island/Small Tropical Island.obj");
+	Model sponza("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/crytek-sponza/sponza.obj");
 	
 	teapot.SetMaterial(cubeMaterial);
+
+	Framebuffer framebuffer(1920, 1080);
+	framebuffer.Create();
+
+	ScreenQuad screenQuad(framebuffer);
 
 	while (!glfwWindowShouldClose(windowManager.GetGLFWwindow()))
 	{
@@ -136,11 +144,15 @@ int main()
 		glfwPollEvents();
 		windowManager.KeyboardMovement();
 
+		framebuffer.Activate();
+
+		// we draw the entire scene with the custom framebuffer bind
+
 		//rendering commands
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		skybox.Draw();
+		glEnable(GL_DEPTH_TEST);
 
 		cube2.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		cube2.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
@@ -150,9 +162,6 @@ int main()
 		plane.Rotate(90.0f, glm::vec3(1.0, 0.0, 0.0));
 		plane.Scale(glm::vec3(15.0, 15.0, 15.0));
 		//plane.Draw(LightingModel::PHONG_TEXTURE);
-
-		wall1.Scale(glm::vec3(15.0, 15.0, 15.0));
-		//wall1.Draw(LightingModel::PHONG_TEXTURE);
 
 		lightMesh.Translate(glm::vec3(2.0f,3.0f,1.0f));
 		lightMesh.Scale(glm::vec3(0.2, 0.2, 0.2));
@@ -169,9 +178,17 @@ int main()
 		teapot.Translate(glm::vec3(-4.0f, 0.0f, -6.0f));
 		teapot.Draw(LightingModel::PHONG_COLOR);
 
-		island.Translate(glm::vec3(0.0f, -5.0f, 0.0f));
-		island.Scale(glm::vec3(0.1f, 0.1f, 0.1f));
-		island.Draw(LightingModel::PHONG_SPECULAR);
+		//island.Translate(glm::vec3(0.0f, -5.0f, 0.0f));
+		//island.Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+		//island.Draw(LightingModel::PHONG_SPECULAR);
+
+		sponza.Scale(glm::vec3(0.02f, 0.02f, 0.02f));
+		sponza.Draw(LightingModel::PHONG_SPECULAR);
+
+		skybox.Draw();
+
+		// draw the quad with attached the screen texture of the custom framebuffer
+		screenQuad.Draw();
 
 		//swap buffers
 		glfwSwapBuffers(windowManager.GetGLFWwindow());

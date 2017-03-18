@@ -22,7 +22,7 @@ public:
 	void CreateShaderProgram();
 	void CreateShader();
 
-	void Use() { glUseProgram(this->_Program); }
+	void Use() { glUseProgram(_Program); }
 
 	const GLuint GetProgram() const { return _Program; }
 

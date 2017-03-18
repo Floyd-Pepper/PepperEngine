@@ -16,6 +16,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{71463802-9512-4827-95ac-1e17c9d4b763}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Lighting Shaders">
+      <UniqueIdentifier>{569ea52f-cd20-487b-8fa7-68db59dbb444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Post Process Effects">
+      <UniqueIdentifier>{31167d54-c15f-4e99-bf4b-f7192e441708}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Camera.cpp">
@@ -61,6 +67,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ScreenQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,6 +122,18 @@
     <ClInclude Include="Sources\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\ScreenQuad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Shaders\DefaultPostProcess.fs">
+      <Filter>Shaders\Post Process Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Shaders\EdgeDetectionEffect.fs">
+      <Filter>Shaders\Post Process Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.vs">
@@ -118,35 +142,47 @@
     <None Include="Shader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Sources\Shaders\PhongTextureShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongTextureShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongColorShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongColorShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\ColorOnlyShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\ColorOnlyShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongSpecularShader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongSpecularShader.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Sources\Shaders\Skybox.vs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Sources\Shaders\Skybox.fs">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\InversionEffect.fs">
+      <Filter>Shaders\Post Process Effects</Filter>
+    </None>
+    <None Include="Sources\Shaders\GrayscaleEffect.fs">
+      <Filter>Shaders\Post Process Effects</Filter>
+    </None>
+    <None Include="Sources\Shaders\BlurEffect.fs">
+      <Filter>Shaders\Post Process Effects</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongColorShader.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongColorShader.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongSpecularShader.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongSpecularShader.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongTextureShader.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\PhongTextureShader.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\ColorOnlyShader.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\ColorOnlyShader.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\ScreenQuad.vs">
+      <Filter>Shaders\Post Process Effects</Filter>
     </None>
   </ItemGroup>
 </Project>

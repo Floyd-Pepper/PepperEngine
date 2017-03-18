@@ -23,6 +23,17 @@ void EngineManager::InitializeEngine()
 	_Shaders["ColorShader"] = colorShader;
 	Shader skyboxShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.fs");
 	_Shaders["SkyboxShader"] = skyboxShader;
+	GLchar* screenQuadVertexShader = "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ScreenQuad.vs";
+	Shader postProcessShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\DefaultPostProcess.fs");
+	_Shaders["PostProcessShader"] = postProcessShader;
+	Shader inversionShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\InversionEffect.fs");
+	_Shaders["InversionEffect"] = inversionShader;
+	Shader grayscaleShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\GrayscaleEffect.fs");
+	_Shaders["GrayscaleEffect"] = grayscaleShader;
+	Shader blurShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\BlurEffect.fs");
+	_Shaders["BlurEffect"] = blurShader;
+	Shader edgeDetectionShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\EdgeDetectionEffect.fs");
+	_Shaders["EdgeDetectionEffect"] = edgeDetectionShader;
 }
 
 void EngineManager::SetLightUniformValues()
@@ -63,4 +74,9 @@ void EngineManager::SetLightUniformValues()
 		directionalLight.SetUniformValues(phongTextureShader.GetProgram(), lightNumber);
 		++lightNumber;
 	}
+}
+
+const Shader & EngineManager::GetShaderByName(const std::string shaderName)
+{
+	return _Shaders[shaderName];
 }

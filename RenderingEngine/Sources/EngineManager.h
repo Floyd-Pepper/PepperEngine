@@ -25,10 +25,7 @@ public:
 	const std::vector<DirectionalLight>& GetDirectionalLights() { return _DirectionalLights; }
 	void AddDirectionalLight(const DirectionalLight& light) { _DirectionalLights.push_back(light); }
 
-	const Shader& GetShaderByName(const std::string shaderName)
-	{
-		return _Shaders[shaderName];
-	}
+	const Shader& GetShaderByName(const std::string shaderName);
 
 private:
 	static EngineManager _Instance;
