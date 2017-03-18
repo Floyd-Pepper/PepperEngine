@@ -164,6 +164,7 @@ void Skybox::Draw()
 {
 	// Draw skybox first
 	glDepthMask(GL_FALSE);// Remember to turn depth writing off
+	glDepthFunc(GL_LEQUAL);
 	Shader skyboxShader = EngineManager::Instance().GetShaderByName("SkyboxShader");
 	skyboxShader.Use();
 	Camera camera = EngineManager::Instance().GetCamera();
@@ -178,5 +179,6 @@ void Skybox::Draw()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _TextureId);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	glDepthMask(GL_TRUE);
 }

@@ -23,6 +23,7 @@
     <ClCompile Include="Sources\Cube.cpp" />
     <ClCompile Include="Sources\DirectionalLight.cpp" />
     <ClCompile Include="Sources\EngineManager.cpp" />
+    <ClCompile Include="Sources\Framebuffer.cpp" />
     <ClCompile Include="Sources\Light.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Material.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="Sources\Model.cpp" />
     <ClCompile Include="Sources\Plane.cpp" />
     <ClCompile Include="Sources\PointLight.cpp" />
+    <ClCompile Include="Sources\ScreenQuad.cpp" />
     <ClCompile Include="Sources\Shader.cpp" />
     <ClCompile Include="Sources\Skybox.cpp" />
     <ClCompile Include="Sources\Texture.cpp" />
@@ -41,13 +43,17 @@
     <ClInclude Include="Sources\Defs.h" />
     <ClInclude Include="Sources\DirectionalLight.h" />
     <ClInclude Include="Sources\EngineManager.h" />
+    <ClInclude Include="Sources\Framebuffer.h" />
     <ClInclude Include="Sources\Light.h" />
     <ClInclude Include="Sources\Material.h" />
     <ClInclude Include="Sources\Mesh.h" />
     <ClInclude Include="Sources\Model.h" />
     <ClInclude Include="Sources\Plane.h" />
     <ClInclude Include="Sources\PointLight.h" />
+    <ClInclude Include="Sources\ScreenQuad.h" />
     <ClInclude Include="Sources\Shader.h" />
+    <ClInclude Include="Sources\Shaders\DefaultPostProcess.fs" />
+    <ClInclude Include="Sources\Shaders\EdgeDetectionEffect.fs" />
     <ClInclude Include="Sources\Skybox.h" />
     <ClInclude Include="Sources\Texture.h" />
     <ClInclude Include="Sources\WindowManager.h" />
@@ -55,14 +61,18 @@
   <ItemGroup>
     <None Include="Shader.fs" />
     <None Include="Shader.vs" />
+    <None Include="Sources\Shaders\BlurEffect.fs" />
     <None Include="Sources\Shaders\ColorOnlyShader.fs" />
     <None Include="Sources\Shaders\ColorOnlyShader.vs" />
+    <None Include="Sources\Shaders\GrayscaleEffect.fs" />
     <None Include="Sources\Shaders\PhongColorShader.fs" />
     <None Include="Sources\Shaders\PhongColorShader.vs" />
     <None Include="Sources\Shaders\PhongSpecularShader.fs" />
     <None Include="Sources\Shaders\PhongSpecularShader.vs" />
     <None Include="Sources\Shaders\PhongTextureShader.fs" />
     <None Include="Sources\Shaders\PhongTextureShader.vs" />
+    <None Include="Sources\Shaders\InversionEffect.fs" />
+    <None Include="Sources\Shaders\ScreenQuad.vs" />
     <None Include="Sources\Shaders\Skybox.fs" />
     <None Include="Sources\Shaders\Skybox.vs" />
   </ItemGroup>
