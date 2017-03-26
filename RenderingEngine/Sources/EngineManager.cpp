@@ -39,7 +39,3 @@ const Shader & EngineManager::GetShaderByName(const std::string shaderName)
 	return _Shaders[shaderName];
 }
 
-const Shader & EngineManager::GetShaderByName(const std::string shaderName)
-{
-	return _Shaders[shaderName];
-}

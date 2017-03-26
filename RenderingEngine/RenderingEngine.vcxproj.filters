@@ -136,12 +136,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shader.fs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Sources\Shaders\Skybox.vs">
       <Filter>Shaders</Filter>
     </None>
