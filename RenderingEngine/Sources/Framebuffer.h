@@ -27,4 +27,7 @@ private:
 	GLuint _Height;
 	GLuint _Framebuffer;
 	GLuint _Texture;
+
+	int a = 10;
+	int b = 5;
 };

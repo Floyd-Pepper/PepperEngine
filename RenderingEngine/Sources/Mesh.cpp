@@ -216,10 +216,11 @@ void Mesh::Draw(LightingModel lightingModel)
 {
 	switch (lightingModel)
 	{
-		case LightingModel::PHONG_COLOR:
+		case LightingModel::PHONG:
 		{
-			_Shader = EngineManager::Instance().GetShaderByName("PhongColorShader");
+			_Shader = EngineManager::Instance().GetShaderByName("BlinnPhongShader");
 			_Shader.Use();
+			glUniform1ui(glGetUniformLocation(_Shader.GetProgram(), "lightingModel"), 2);
 			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
 			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
 			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
@@ -236,101 +237,60 @@ void Mesh::Draw(LightingModel lightingModel)
 				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
 				++lightNumber;
 			}
-			//EngineManager::Instance().SetLightUniformValues();
-			SetMaterialUniformValues();
-			break;
-		}		
-		case LightingModel::PHONG_TEXTURE:
-		{
-			_Shader = EngineManager::Instance().GetShaderByName("PhongTextureShader");
-			_Shader.Use();
-			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
-			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
-			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
-			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
-			int lightNumber = 0;
-			for (auto pointLight : EngineManager::Instance().GetPointLights())
-			{
-				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
-				++lightNumber;
-			}
-			lightNumber = 0;
-			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
-			{
-				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
-				++lightNumber;
-			}
-			//EngineManager::Instance().SetLightUniformValues();
 			if (!_Textures.empty())
 			{
+				glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "hasTexture"), true);
 				SetTexturesUniformValues();
 			}
-			SetMaterialUniformValues();
-			break;
-		}	
-		case LightingModel::PHONG_SPECULAR:
-		{
-			_Shader = EngineManager::Instance().GetShaderByName("PhongSpecularShader");
-			_Shader.Use();
-			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
-			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
-			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
-			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
-			int lightNumber = 0;
-			for (auto pointLight : EngineManager::Instance().GetPointLights())
+			else
 			{
-				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
-				++lightNumber;
-			}
-			lightNumber = 0;
-			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
-			{
-				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
-				++lightNumber;
-			}
-			//EngineManager::Instance().SetLightUniformValues();
-			if (!_Textures.empty())
-			{
-				SetTexturesUniformValues();
+				glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "hasTexture"), false);
 			}
 			SetMaterialUniformValues();
+
 			break;
 		}
-		case LightingModel::DIFFUSE_ONLY:
+		case LightingModel::BLINN_PHONG:
 		{
+			_Shader = EngineManager::Instance().GetShaderByName("BlinnPhongShader");
+			_Shader.Use();
+			glUniform1ui(glGetUniformLocation(_Shader.GetProgram(), "lightingModel"), 2);
+			GLint dirLightCount = glGetUniformLocation(_Shader.GetProgram(), "dirLightCount");
+			GLint pointLightCount = glGetUniformLocation(_Shader.GetProgram(), "pointLightCount");
+			glUniform1i(dirLightCount, EngineManager::Instance().GetDirectionalLights().size());
+			glUniform1i(pointLightCount, EngineManager::Instance().GetPointLights().size());
+			int lightNumber = 0;
+			for (auto pointLight : EngineManager::Instance().GetPointLights())
+			{
+				pointLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			lightNumber = 0;
+			for (auto directionalLight : EngineManager::Instance().GetDirectionalLights())
+			{
+				directionalLight.SetUniformValues(_Shader.GetProgram(), lightNumber);
+				++lightNumber;
+			}
+			if (!_Textures.empty())
+			{
+				glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "hasTexture"), true);
+				SetTexturesUniformValues();
+			}
+			else
+			{
+				glUniform1i(glGetUniformLocation(_Shader.GetProgram(), "hasTexture"), false);
+			}
+			SetMaterialUniformValues();
+
 			break;
 		}
 		case LightingModel::COLOR_ONLY:
 		{
-			_Shader = EngineManager::Instance().GetShaderByName("ColorShader");
+			_Shader = EngineManager::Instance().GetShaderByName("ColorOnly");
 			_Shader.Use();
 			SetColorUniformValues();
 			break;
 		}	
-		/*case LightingModel::SKYBOX:
-		{
-			glDepthMask(GL_FALSE);
-			_Shader.Use();
-			glm::mat4 view;
-			glm::mat4 projection;
-			// Camera / View transformation
-			Camera camera = EngineManager::Instance().GetCamera();
-			view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-			// projection
-			projection = glm::perspective(45.0f, 1920.0f / 1080.0f, 0.1f, 100.0f);
-			// MVP matrix loc
-			GLint viewLoc = glGetUniformLocation(_Shader.GetProgram(), "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-			GLint projectionLoc = glGetUniformLocation(_Shader.GetProgram(), "projection");
-			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-			glBindVertexArray(_VAO);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, _Id);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-			glBindVertexArray(0);
-			glDepthMask(GL_TRUE);
-			// ... Draw rest of the scene
-			break;
-		}*/
 	}
 	SetMvpUniformValue();
 	//Drawing
@@ -356,6 +316,7 @@ void Mesh::SetTexturesUniformValues()
 		GLuint in = texture.GetTextureID();
 		glActiveTexture(GL_TEXTURE0 + i);
 		std::stringstream ss;
+		// gestion de plusieurs textures désactivée pour le moment
 		std::string number;
 		std::string name = texture.GetType();
 		if (name == "texture_diffuse")
@@ -363,7 +324,7 @@ void Mesh::SetTexturesUniformValues()
 		else if (name == "texture_specular")
 			ss << specularNr++;
 		number = ss.str();
-		GLint loc = glGetUniformLocation(_Shader.GetProgram(), ("material." + name + number).c_str());
+		GLint loc = glGetUniformLocation(_Shader.GetProgram(), ("material." + name).c_str());
 		glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
 		glUniform1i(loc, i);
 		i++;

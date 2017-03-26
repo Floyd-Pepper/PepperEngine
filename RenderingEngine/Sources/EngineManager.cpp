@@ -13,67 +13,25 @@ EngineManager& EngineManager::Instance()
 
 void EngineManager::InitializeEngine()
 {
-	Shader PhongColorShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongColorShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongColorShader.fs");
-	_Shaders["PhongColorShader"] = PhongColorShader;
-	Shader PhongTextureShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongTextureShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongTextureShader.fs");
-	_Shaders["PhongTextureShader"] = PhongTextureShader;
-	Shader PhongSpecularShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongSpecularShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\PhongSpecularShader.fs");
-	_Shaders["PhongSpecularShader"] = PhongSpecularShader;
-	Shader colorShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ColorOnlyShader.fs");
-	_Shaders["ColorShader"] = colorShader;
-	Shader skyboxShader("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.vs", "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\Skybox.fs");
+	// lighting shaders
+	Shader colorShader("../RenderingEngine/Sources/Shaders/Color_Only.vs", "../RenderingEngine/Sources/Shaders/Color_Only.fs");
+	_Shaders["ColorOnly"] = colorShader;
+	Shader BlinnPhongShader("../RenderingEngine/Sources/Shaders/Standard_Lighting.vs", "../RenderingEngine/Sources/Shaders/Standard_Lighting.fs");
+	_Shaders["BlinnPhongShader"] = BlinnPhongShader;
+	Shader skyboxShader("../RenderingEngine/Sources/Shaders/Skybox.vs", "../RenderingEngine/Sources/Shaders/Skybox.fs");
 	_Shaders["SkyboxShader"] = skyboxShader;
-	GLchar* screenQuadVertexShader = "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\ScreenQuad.vs";
-	Shader postProcessShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\DefaultPostProcess.fs");
+	GLchar* screenQuadVertexShader = "../RenderingEngine/Sources/Shaders/ScreenQuad.vs";
+	Shader postProcessShader(screenQuadVertexShader, "../RenderingEngine/Sources/Shaders/DefaultPostProcess.fs");
 	_Shaders["PostProcessShader"] = postProcessShader;
-	Shader inversionShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\InversionEffect.fs");
+	// effect shaders
+	Shader inversionShader(screenQuadVertexShader, "../RenderingEngine/Sources/Shaders/InversionEffect.fs");
 	_Shaders["InversionEffect"] = inversionShader;
-	Shader grayscaleShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\GrayscaleEffect.fs");
+	Shader grayscaleShader(screenQuadVertexShader, "../RenderingEngine/Sources/Shaders/GrayscaleEffect.fs");
 	_Shaders["GrayscaleEffect"] = grayscaleShader;
-	Shader blurShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\BlurEffect.fs");
+	Shader blurShader(screenQuadVertexShader, "../RenderingEngine/Sources/Shaders/BlurEffect.fs");
 	_Shaders["BlurEffect"] = blurShader;
-	Shader edgeDetectionShader(screenQuadVertexShader, "C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\RenderingEngine\\RenderingEngine\\Sources\\Shaders\\EdgeDetectionEffect.fs");
+	Shader edgeDetectionShader(screenQuadVertexShader, "../RenderingEngine/Sources/Shaders/EdgeDetectionEffect.fs");
 	_Shaders["EdgeDetectionEffect"] = edgeDetectionShader;
-}
-
-void EngineManager::SetLightUniformValues()
-{
-	Shader phongColorShader = GetShaderByName("PhongColorShader");
-	phongColorShader.Use();
-	GLint dirLightCount = glGetUniformLocation(phongColorShader.GetProgram(), "dirLightCount");
-	GLint pointLightCount = glGetUniformLocation(phongColorShader.GetProgram(), "pointLightCount");
-	glUniform1i(dirLightCount, GetDirectionalLights().size());
-	glUniform1i(pointLightCount, GetPointLights().size());
-	int lightNumber = 0;
-	for (auto pointLight : GetPointLights())
-	{
-		pointLight.SetUniformValues(phongColorShader.GetProgram(), lightNumber);
-		++lightNumber;
-	}
-	lightNumber = 0;
-	for (auto directionalLight : GetDirectionalLights())
-	{
-		directionalLight.SetUniformValues(phongColorShader.GetProgram(), lightNumber);
-		++lightNumber;
-	}
-	Shader phongTextureShader = GetShaderByName("PhongTextureShader");
-	phongTextureShader.Use();
-	dirLightCount = glGetUniformLocation(phongTextureShader.GetProgram(), "dirLightCount");
-	pointLightCount = glGetUniformLocation(phongTextureShader.GetProgram(), "pointLightCount");
-	glUniform1i(dirLightCount, GetDirectionalLights().size());
-	glUniform1i(pointLightCount, GetPointLights().size());
-	lightNumber = 0;
-	for (auto pointLight : GetPointLights())
-	{
-		pointLight.SetUniformValues(phongTextureShader.GetProgram(), lightNumber);
-		++lightNumber;
-	}
-	lightNumber = 0;
-	for (auto directionalLight : GetDirectionalLights())
-	{
-		directionalLight.SetUniformValues(phongTextureShader.GetProgram(), lightNumber);
-		++lightNumber;
-	}
 }
 
 const Shader & EngineManager::GetShaderByName(const std::string shaderName)

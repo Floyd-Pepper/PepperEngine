@@ -157,32 +157,20 @@
     <None Include="Sources\Shaders\BlurEffect.fs">
       <Filter>Shaders\Post Process Effects</Filter>
     </None>
-    <None Include="Sources\Shaders\PhongColorShader.fs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongColorShader.vs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongSpecularShader.fs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongSpecularShader.vs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongTextureShader.fs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\PhongTextureShader.vs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\ColorOnlyShader.vs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
-    <None Include="Sources\Shaders\ColorOnlyShader.fs">
-      <Filter>Shaders\Lighting Shaders</Filter>
-    </None>
     <None Include="Sources\Shaders\ScreenQuad.vs">
       <Filter>Shaders\Post Process Effects</Filter>
+    </None>
+    <None Include="Sources\Shaders\Color_Only.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\Color_Only.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\Standard_Lighting.fs">
+      <Filter>Shaders\Lighting Shaders</Filter>
+    </None>
+    <None Include="Sources\Shaders\Standard_Lighting.vs">
+      <Filter>Shaders\Lighting Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

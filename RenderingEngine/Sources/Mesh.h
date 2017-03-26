@@ -44,7 +44,6 @@ public:
 	void SetTexturesUniformValues();
 	void SetMvpUniformValue();
 	void SetMaterialUniformValues();
-	//void SetPhongLightingUniformValues();
 	void SetColorUniformValues();
 	void DrawIndices(); // à supprimer ?
 

@@ -15,25 +15,47 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::GenerateAttachmentTexture(GLboolean depth, GLboolean stencil)
 {
-	GLenum attachmentType;
+	GLenum attachmentFormat, attachmentType;
+	const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	if (!depth && !stencil)
-		attachmentType = GL_RGB;
+	{
+		attachmentFormat = GL_RGB;
+		attachmentType = GL_COLOR_ATTACHMENT0;
+	}
 	else if (depth && !stencil)
-		attachmentType = GL_DEPTH_COMPONENT;
+	{
+		attachmentFormat = GL_DEPTH_COMPONENT;
+		attachmentType = GL_DEPTH_ATTACHMENT;
+	}
+		
 	else if (!depth && stencil)
-		attachmentType = GL_STENCIL_INDEX;
-
+	{
+		attachmentFormat = GL_STENCIL_INDEX;
+		attachmentType = GL_STENCIL_ATTACHMENT;
+	}
 	glGenTextures(1, &_Texture);
 	glBindTexture(GL_TEXTURE_2D, _Texture);
 
 	if (!depth && !stencil)
-		glTexImage2D(GL_TEXTURE_2D, 0, attachmentType, _Width, _Height, 0, attachmentType, GL_UNSIGNED_BYTE, NULL);
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, attachmentFormat, _Width, _Height, 0, attachmentFormat, GL_UNSIGNED_BYTE, NULL);
+	}
+	else if (depth && !stencil)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, attachmentFormat, SHADOW_WIDTH, SHADOW_HEIGHT, 0, attachmentFormat, GL_FLOAT, NULL);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}	
 	else // Using both a stencil and depth test
+	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, _Width, _Height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	}
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _Texture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, _Texture, 0);
 }
 
 void Framebuffer::GenerateRenderBuffer()
