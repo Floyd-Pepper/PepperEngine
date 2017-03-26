@@ -1,7 +1,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-enum LightingModel { PHONG_COLOR, PHONG_TEXTURE, PHONG_SPECULAR, DIFFUSE_ONLY, COLOR_ONLY, SKYBOX };
+enum LightingModel { PHONG, BLINN_PHONG, COLOR_ONLY };
 enum TextureType { IMAGE, SPECULAR, DIFFUSE };
 
 #endif

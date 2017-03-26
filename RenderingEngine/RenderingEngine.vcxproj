@@ -61,16 +61,12 @@
   <ItemGroup>
     <None Include="Shader.fs" />
     <None Include="Shader.vs" />
+    <None Include="Sources\Shaders\Standard_Lighting.fs" />
     <None Include="Sources\Shaders\BlurEffect.fs" />
-    <None Include="Sources\Shaders\ColorOnlyShader.fs" />
-    <None Include="Sources\Shaders\ColorOnlyShader.vs" />
+    <None Include="Sources\Shaders\Color_Only.fs" />
+    <None Include="Sources\Shaders\Color_Only.vs" />
     <None Include="Sources\Shaders\GrayscaleEffect.fs" />
-    <None Include="Sources\Shaders\PhongColorShader.fs" />
-    <None Include="Sources\Shaders\PhongColorShader.vs" />
-    <None Include="Sources\Shaders\PhongSpecularShader.fs" />
-    <None Include="Sources\Shaders\PhongSpecularShader.vs" />
-    <None Include="Sources\Shaders\PhongTextureShader.fs" />
-    <None Include="Sources\Shaders\PhongTextureShader.vs" />
+    <None Include="Sources\Shaders\Standard_Lighting.vs" />
     <None Include="Sources\Shaders\InversionEffect.fs" />
     <None Include="Sources\Shaders\ScreenQuad.vs" />
     <None Include="Sources\Shaders\Skybox.fs" />

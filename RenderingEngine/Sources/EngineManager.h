@@ -11,11 +11,11 @@
 class EngineManager 
 {
 public:
+	enum LIGHTING_MODEL { PHONG, BLINN_PHONG };
+
 	static EngineManager& Instance();
 
 	void InitializeEngine();
-
-	void SetLightUniformValues();
 
 	Camera& GetCamera() { return _Camera; }
 	void SetCamera(const Camera& camera) { _Camera = camera; }
