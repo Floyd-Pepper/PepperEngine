@@ -34,7 +34,7 @@ void EngineManager::InitializeEngine()
 	_Shaders["EdgeDetectionEffect"] = edgeDetectionShader;
 }
 
-const Shader & EngineManager::GetShaderByName(const std::string shaderName)
+const Shader & EngineManager::GetShaderByName(const std::string& shaderName)
 {
 	return _Shaders[shaderName];
 }

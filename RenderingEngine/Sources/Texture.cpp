@@ -1,34 +1,6 @@
 #include <SOIL\SOIL.h>
 #include "Texture.h"
 
-/*Texture::Texture(char* path) : _Path(path)
-{
-	_WrappingMethod = Repeat;
-	_FilteringMethod = Linear;
-	CreateTexture();
-}
-
-Texture::Texture(char * path, WrappingMethod wrappingMethod) : _Path(path)
-{
-	_WrappingMethod = wrappingMethod;
-	_FilteringMethod = Linear;
-	CreateTexture();
-}
-
-Texture::Texture(char * path, FilteringMethod filteringMethod) : _Path(path)
-{
-	_WrappingMethod = Repeat;
-	_FilteringMethod = filteringMethod;
-	CreateTexture();
-}
-
-Texture::Texture(char * path, WrappingMethod wrappingMethod, FilteringMethod filteringMethod) : _Path(path)
-{
-	_WrappingMethod = wrappingMethod;
-	_FilteringMethod = filteringMethod;
-	CreateTexture();
-}*/
-
 Texture::Texture(const char * path, TextureType type, WrappingMethod wrappingMethod, FilteringMethod filteringMethod) : _Path(path), _WrappingMethod(wrappingMethod), _FilteringMethod(filteringMethod)
 {
 	SetType(type);

@@ -20,12 +20,12 @@ public:
 	Camera& GetCamera() { return _Camera; }
 	void SetCamera(const Camera& camera) { _Camera = camera; }
 
-	const std::vector<PointLight>& GetPointLights() { return _PointLights; }
+	const std::vector<PointLight>& GetPointLights() const { return _PointLights; }
 	void AddPointLight(const PointLight& light) { _PointLights.push_back(light); }
-	const std::vector<DirectionalLight>& GetDirectionalLights() { return _DirectionalLights; }
+	const std::vector<DirectionalLight>& GetDirectionalLights() const { return _DirectionalLights; }
 	void AddDirectionalLight(const DirectionalLight& light) { _DirectionalLights.push_back(light); }
 
-	const Shader& GetShaderByName(const std::string shaderName);
+	const Shader& GetShaderByName(const std::string& shaderName);
 
 private:
 	static EngineManager _Instance;

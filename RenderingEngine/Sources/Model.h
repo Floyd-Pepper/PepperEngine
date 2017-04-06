@@ -21,9 +21,9 @@ public:
 	void Draw(LightingModel lightingModel);
 
 	void SetMaterial(const Material& material);
-	void Translate(glm::vec3 translationVector);
-	void Rotate(GLfloat angle, glm::vec3 rotationAxis);
-	void Scale(glm::vec3 scale);
+	void Translate(const glm::vec3& translationVector);
+	void Rotate(GLfloat angle, const glm::vec3& rotationAxis);
+	void Scale(const glm::vec3& scale);
 
 private:
 	void LoadModel(const std::string& path);

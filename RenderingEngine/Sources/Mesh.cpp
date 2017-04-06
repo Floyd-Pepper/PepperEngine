@@ -9,7 +9,7 @@
 #include <sstream>
 #include <iostream>
 
-Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const std::vector<Texture>& textures)
 {
 	_Vertices = vertices;
 	_Indices = indices;
@@ -17,7 +17,7 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vec
 	ConfigureMesh();
 }
 
-Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material) : _Shader(shader), _Material(material)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const Shader& shader, const Material& material) : _Shader(shader), _Material(material)
 {
 	_Vertices = vertices;
 	_Indices = indices;
@@ -25,7 +25,7 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& 
 	ConfigureMesh();
 }
 
-void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals)
+void Mesh::FillDataStructure(const std::vector<glm::vec3>& positions, const std::vector<glm::vec2>& UV, const std::vector<glm::vec3>& normals)
 {
 	for (int i = 0; i < positions.size(); ++i)
 	{
@@ -38,7 +38,7 @@ void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::
 	}	
 }
 
-void Mesh::FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals, std::vector<int> indices)
+void Mesh::FillDataStructure(const std::vector<glm::vec3>& positions, const std::vector<glm::vec2>& UV, const std::vector<glm::vec3>& normals, const std::vector<int>& indices)
 {
 	for (int i = 0; i < positions.size(); ++i)
 	{
@@ -318,22 +318,22 @@ void Mesh::AddTexture(Texture& texture)
 	_Textures.push_back(texture);
 }
 
-void Mesh::SetObjectColor(glm::vec3 color)
+void Mesh::SetObjectColor(const glm::vec3& color)
 {
 	_ObjectColor = color;
 }
 
-void Mesh::Translate(glm::vec3 translationVector)
+void Mesh::Translate(const glm::vec3& translationVector)
 {
 	_Transformation = glm::translate(_Transformation, translationVector);
 }
 
-void Mesh::Rotate(GLfloat angle, glm::vec3 rotationAxis)
+void Mesh::Rotate(GLfloat angle, const glm::vec3& rotationAxis)
 {
 	_Transformation = glm::rotate(_Transformation, angle, rotationAxis);
 }
 
-void Mesh::Scale(glm::vec3 scaleValues)
+void Mesh::Scale(const glm::vec3& scaleValues)
 {
 	_Transformation = glm::scale(_Transformation, scaleValues);
 }

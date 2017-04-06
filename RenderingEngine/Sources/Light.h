@@ -9,14 +9,14 @@
 class Light
 {
 public:
-	Light(glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f), glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f));
+	Light(const glm::vec3& position = glm::vec3(0.0f,0.0f,0.0f), const glm::vec3& ambient = glm::vec3(0.2f, 0.2f, 0.2f), const glm::vec3& diffuse = glm::vec3(0.5f, 0.5f, 0.5f), const glm::vec3& specular = glm::vec3(1.0f, 1.0f, 1.0f));
 	
 	virtual void Abstract() = 0;
 
-	const glm::vec3& GetPosition() { return _Position; }
-	const glm::vec3& GetAmbient() { return _Ambient; }
-	const glm::vec3& GetDiffuse() { return _Diffuse; }
-	const glm::vec3& GetSpecular() { return _Specular; }
+	const glm::vec3& GetPosition() const { return _Position; }
+  const glm::vec3& GetAmbient() const { return _Ambient; }
+  const glm::vec3& GetDiffuse() const { return _Diffuse; }
+  const glm::vec3& GetSpecular() const { return _Specular; }
 
 protected:
 	void GetUniformName(std::string& name, const std::string& lightArrayName, const std::string& propertyName, unsigned int lightIndex);

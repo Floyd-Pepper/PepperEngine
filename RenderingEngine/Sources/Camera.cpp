@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <GLFW/glfw3.h>
 
-Camera::Camera(glm::vec3 position, glm::vec3 up) : _Front(glm::vec3(0.0f, 0.0f, -1.0f))
+Camera::Camera(const glm::vec3& position, const glm::vec3& up) : _Front(glm::vec3(0.0f, 0.0f, -1.0f))
 {
 	_Position = position;
 	_WorldUp = up;
@@ -20,7 +20,6 @@ glm::mat4 Camera::GetViewMatrix()
 void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
 {
 	GLfloat velocity = _MovementSpeed * deltaTime;
-	std::string deb = debug;
 	if (direction == FORWARD)
 		_Position += _Front * velocity;
 	if (direction == BACKWARD)

@@ -7,13 +7,13 @@
 class Material
 {
 public:
-	Material(glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f), GLfloat shininess = 32);
+	Material(const glm::vec3& ambient = glm::vec3(0.2f, 0.2f, 0.2f), const glm::vec3& diffuse = glm::vec3(0.5f, 0.5f, 0.5f), const glm::vec3& specular = glm::vec3(1.0f, 1.0f, 1.0f), GLfloat shininess = 32);
 	~Material();
 
-	const glm::vec3& GetAmbient(){ return _Ambient; }
-	const glm::vec3& GetDiffuse() { return _Diffuse; }
-	const glm::vec3& GetSpecular() { return _Specular; }
-	const GLfloat GetShininess() { return _Shininess; }
+	const glm::vec3& GetAmbient() const { return _Ambient; }
+  const glm::vec3& GetDiffuse() const { return _Diffuse; }
+  const glm::vec3& GetSpecular() const { return _Specular; }
+  const GLfloat GetShininess() const { return _Shininess; }
 
 private:
 	glm::vec3 _Ambient;

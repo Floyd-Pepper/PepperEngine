@@ -1,6 +1,6 @@
 #include "Material.h"
 
-Material::Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLfloat shininess)
+Material::Material(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, GLfloat shininess)
 {
 	_Ambient = ambient;
 	_Diffuse = diffuse;

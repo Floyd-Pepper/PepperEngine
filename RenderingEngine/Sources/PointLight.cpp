@@ -1,7 +1,7 @@
 #include "PointLight.h"
 #include "EngineManager.h"
 
-PointLight::PointLight(glm::vec3 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLfloat constant, GLfloat linear, GLfloat quadratic) : Light(position, ambient, diffuse, specular), _Constant(constant), _Linear(linear), _Quadratic(quadratic)
+PointLight::PointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, GLfloat constant, GLfloat linear, GLfloat quadratic) : Light(position, ambient, diffuse, specular), _Constant(constant), _Linear(linear), _Quadratic(quadratic)
 {
 
 }

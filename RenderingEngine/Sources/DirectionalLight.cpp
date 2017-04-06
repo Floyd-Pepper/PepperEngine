@@ -1,7 +1,7 @@
 #include "DirectionalLight.h"
 #include "EngineManager.h"
 
-DirectionalLight::DirectionalLight(glm::vec3 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction) : Light(position, ambient, diffuse, specular), _Direction(direction)
+DirectionalLight::DirectionalLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& direction) : Light(position, ambient, diffuse, specular), _Direction(direction)
 {
 
 }

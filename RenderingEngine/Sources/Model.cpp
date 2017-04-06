@@ -156,19 +156,19 @@ void Model::SetMaterial(const Material& material)
 		mesh.SetMaterial(material);
 }
 
-void Model::Translate(glm::vec3 translationVector)
+void Model::Translate(const glm::vec3& translationVector)
 {
 	for (auto& mesh : _Meshes)
 		mesh.Translate(translationVector);
 }
 
-void Model::Rotate(GLfloat angle, glm::vec3 rotationAxis)
+void Model::Rotate(GLfloat angle, const glm::vec3& rotationAxis)
 {
 	for (auto& mesh : _Meshes)
 		mesh.Rotate(angle, rotationAxis);
 }
 
-void Model::Scale(glm::vec3 scale)
+void Model::Scale(const glm::vec3& scale)
 {
 	for (auto& mesh : _Meshes)
 		mesh.Scale(scale);

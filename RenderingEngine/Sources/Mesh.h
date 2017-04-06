@@ -31,12 +31,12 @@ class Mesh
 {
 public:
 	Mesh() {}
-	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures);
-	Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shader, Material& material = Material());	
+  Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const std::vector<Texture>& textures);
+  Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices, const Shader& shader, const Material& material = Material());
 	~Mesh() {}
 
-	void FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals);
-	void FillDataStructure(std::vector<glm::vec3> positions, std::vector<glm::vec2> UV, std::vector<glm::vec3> normals, std::vector<int> indices);
+	void FillDataStructure(const std::vector<glm::vec3>& positions, const std::vector<glm::vec2>& UV, const std::vector<glm::vec3>& normals);
+	void FillDataStructure(const std::vector<glm::vec3>& positions, const std::vector<glm::vec2>& UV, const std::vector<glm::vec3>& normals, const std::vector<int>& indices);
 	virtual void ConfigureMesh();
 	void ConfigureMeshIndices(); // a supprimer ?
 	//virtual void Draw();
@@ -49,12 +49,12 @@ public:
 
 	void AddTexture(Texture& texture);
 
-	void SetObjectColor(glm::vec3 color);
+	void SetObjectColor(const glm::vec3& color);
 
 	//transformations :
-	void Translate(glm::vec3 translationVector);
-	void Rotate(GLfloat angle, glm::vec3 rotationAxis);
-	void Scale(glm::vec3 scaleValues);
+	void Translate(const glm::vec3& translationVector);
+	void Rotate(GLfloat angle, const glm::vec3& rotationAxis);
+	void Scale(const glm::vec3& scaleValues);
 
 	const Shader& GetShader() const { return _Shader; }
 	void SetShader(Shader& shader) { _Shader = shader; }
