@@ -15,7 +15,7 @@ class Skybox
 public:
 	Skybox();
 	~Skybox() {}
-	void ConfigureSkybox();
+	void ConfigureSkybox(const std::vector<const GLchar*>& faces);
 	void loadCubemap(std::vector<const GLchar*> faces);
 	void Draw();
 

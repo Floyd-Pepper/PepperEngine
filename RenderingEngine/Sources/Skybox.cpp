@@ -8,7 +8,7 @@ Skybox::Skybox()
 	_CubeMesh.SetShader(shader);
 }
 
-void Skybox::ConfigureSkybox()
+void Skybox::ConfigureSkybox(const std::vector<const GLchar*>& faces)
 {
 	GLfloat skyboxVertices[] = {
 		// Positions          
@@ -125,13 +125,6 @@ void Skybox::ConfigureSkybox()
 	glBindVertexArray(0);
 
 	// Cubemap (Skybox)
-	std::vector<const GLchar*> faces;
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/right.jpg");
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/left.jpg");
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/top.jpg");
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/bottom.jpg");
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/back.jpg");
-	faces.push_back("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Textures/Skybox/front.jpg");
 	loadCubemap(faces);
 }
 

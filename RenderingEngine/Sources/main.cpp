@@ -41,15 +41,20 @@ int main()
 	PointLight pointLight2(glm::vec3(-2.0f, 3.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(0.9f, 0.9f, 0.0f), glm::vec3(0.9f, 0.9f, 0.0f));
 	EngineManager::Instance().AddPointLight(pointLight2);
 
-	Texture texture1("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container.jpg", Texture::DIFFUSE, Texture::MirroredRepeat, Texture::Nearest);
-	Texture texture2("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\awesomeface.png", Texture::IMAGE, Texture::MirroredRepeat, Texture::Nearest);
-	Texture containerTexture("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container2.png", Texture::DIFFUSE);
-	Texture containerSpecularMap("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\container2_specular.png", Texture::SPECULAR);
-	Texture parquet("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\parquet.png", Texture::DIFFUSE);
-	Texture brickwallTexture("C:\\Users\\Julien\\Documents\\Visual Studio 2015\\Projects\\Ressources\\Textures\\brickwall.jpg", Texture::DIFFUSE);
+	Texture texture1("../Ressources/Textures/container.jpg", Texture::DIFFUSE, Texture::MirroredRepeat, Texture::Nearest);
+	Texture containerTexture("../Ressources/Textures/container2.png", Texture::DIFFUSE);
+	Texture containerSpecularMap("../Ressources/Textures/container2_specular.png", Texture::SPECULAR);
+	Texture parquet("../Ressources/Textures/parquet.png", Texture::DIFFUSE);
 
 	Skybox skybox;
-	skybox.ConfigureSkybox();
+	std::vector<const GLchar*> faces;
+	faces.push_back("../Ressources/Textures/Skybox/right.jpg");
+	faces.push_back("../Ressources/Textures/Skybox/left.jpg");
+	faces.push_back("../Ressources/Textures/Skybox/top.jpg");
+	faces.push_back("../Ressources/Textures/Skybox/bottom.jpg");
+	faces.push_back("../Ressources/Textures/Skybox/back.jpg");
+	faces.push_back("../Ressources/Textures/Skybox/front.jpg");
+	skybox.ConfigureSkybox(faces);
 
 	Cube cube;
 	cube.AddTexture(containerTexture);
@@ -63,10 +68,10 @@ int main()
 	Cube lightMesh2;
 	lightMesh2.SetObjectColor(glm::vec3(0.9f, 0.9f, 0.0f));
 
-	Model nano("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/nanosuit/nanosuit.obj");
-	Model teapot("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/teapot.obj");
-	//Model island("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/Small Tropical Island/Small Tropical Island.obj");
-	Model sponza("C:/Users/Julien/Documents/Visual Studio 2015/Projects/Ressources/Models/crytek-sponza/sponza.obj");
+	Model nano("../Ressources/Models/nanosuit/nanosuit.obj");
+	Model teapot("../Ressources/Models/teapot.obj");
+	//Model island("../Ressources/Models/Small Tropical Island/Small Tropical Island.obj");
+	Model sponza("../Ressources/Models/crytek-sponza/sponza.obj");
 	
 	teapot.SetMaterial(cubeMaterial);
 
@@ -92,7 +97,7 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		cube.Rotate((GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		cube.Translate(glm::vec3(2.0f, 0.0f, 2.0f));
+		cube.Translate(glm::vec3(2.0f, 0.5f, 2.0f));
 	
 		cube.Draw(LightingModel::BLINN_PHONG);
 
@@ -108,7 +113,7 @@ int main()
 		nano.Scale(glm::vec3(0.25f, 0.25f, 0.25f));
 		nano.Draw(LightingModel::BLINN_PHONG);
 
-		teapot.Translate(glm::vec3(-4.0f, 0.0f, -6.0f));
+		teapot.Translate(glm::vec3(6.0f, 0.0f, -4.0f));
 		teapot.Draw(LightingModel::BLINN_PHONG);
 
 		//island.Translate(glm::vec3(0.0f, -5.0f, 0.0f));
